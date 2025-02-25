@@ -1,0 +1,39 @@
+import os
+import csv
+import psycopg2
+
+def save_to_csv(file_name):
+    try:
+        # Connect to PostgreSQL
+        conn = psycopg2.connect(
+            host="localhost",
+            user="postgres",
+            password="3062",
+            database="agrimesh"
+        )
+        cursor = conn.cursor()
+
+        # Fetch data
+        query = ("SELECT productname, category, quantity, price, location FROM produce")
+        cursor.execute(query)
+        records = cursor.fetchall()
+        
+        # Close connection
+        cursor.close()
+        conn.close()
+
+        # Save data to CSV
+        file_path = os.path.abspath(file_name)
+        headers = ["productname", "category", "quantity", "price", "location"]
+
+        with open(file_path, mode="w", newline="", encoding="utf-8") as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(headers)  
+            writer.writerows(records)  
+
+        
+        return file_path  
+
+    except Exception as e:
+        print("Error:", e)
+        return None

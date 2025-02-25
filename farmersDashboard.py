@@ -1,5 +1,6 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import QTimer
 from PyQt6.QtWidgets import *
 import psycopg2
 
@@ -123,7 +124,14 @@ class Ui_MainWindow(object):
         self.viewOrderscommandLinkButton.setGeometry(QtCore.QRect(10, 140, 222, 48))
         self.viewOrderscommandLinkButton.setObjectName("viewOrderscommandLinkButton")
         
+        
+       
         self.viewOrderscommandLinkButton.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(2))
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updateviewProduceTableWidget)
+        self.timer.timeout.connect(self.updateeditproduceTablewidget)
+        self.timer.start(5000) 
+        
         
         self.groupBox_5 = QtWidgets.QGroupBox(parent=self.dashboardPagewidget)
         self.groupBox_5.setGeometry(QtCore.QRect(0, 310, 681, 411))
@@ -153,6 +161,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setObjectName("tabWidget")
         self.AddproduceTab = QtWidgets.QWidget()
         self.AddproduceTab.setObjectName("AddproduceTab")
+        #self.AddproduceTab
         self.label = QtWidgets.QLabel(parent=self.AddproduceTab)
         self.label.setGeometry(QtCore.QRect(20, 20, 111, 21))
         self.label.setObjectName("label")
@@ -198,12 +207,14 @@ class Ui_MainWindow(object):
         self.uploadProduceImagepushButton = QtWidgets.QPushButton(parent=self.AddproduceTab)
         self.uploadProduceImagepushButton.setGeometry(QtCore.QRect(440, 280, 171, 31))
         self.uploadProduceImagepushButton.setObjectName("uploadProduceImagepushButton")
+        self.uploadProduceImagepushButton.clicked.connect(self.uploadProduceImagepushButtonClicked)
         self.imagesettinglabel = QtWidgets.QLabel(parent=self.AddproduceTab)
         self.imagesettinglabel.setGeometry(QtCore.QRect(190, 320, 200, 200))
         self.imagesettinglabel.setStyleSheet("border: 1px solid black")
         self.imagesettinglabel.setText("")
         self.imagesettinglabel.setObjectName("imagesettinglabel")
         self.addTheProducePushButton = QtWidgets.QPushButton(parent=self.AddproduceTab)
+        self.addTheProducePushButton.clicked.connect( self.addTheProducePushButtonClicked)
         self.addTheProducePushButton.setGeometry(QtCore.QRect(190, 540, 171, 31))
         self.addTheProducePushButton.setObjectName("addTheProducePushButton")
         self.tabWidget.addTab(self.AddproduceTab, "")
@@ -273,6 +284,7 @@ class Ui_MainWindow(object):
         self.viewProducetableWidget.setObjectName("viewProducetableWidget")
         self.viewProducetableWidget.setColumnCount(5)
         self.viewProducetableWidget.setRowCount(0)
+        self.updateviewProduceTableWidget()
         item = QtWidgets.QTableWidgetItem()
         self.viewProducetableWidget.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -566,6 +578,7 @@ class Ui_MainWindow(object):
         self.saveproduceascomboBox_viewproduce.setItemText(3, _translate("MainWindow", "CSV "))
         self.saveproduceascomboBox_viewproduce.setItemText(4, _translate("MainWindow", "ScreenShot"))
         self.saveproduceaspushButton_viewproduce.setText(_translate("MainWindow", "Save"))
+        self.saveproduceaspushButton_viewproduce.clicked.connect(self.saveproduceaspushButton_viewproduceclicked)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.viewproduceTab), _translate("MainWindow", "View Produce"))
         self.label_7.setText(_translate("MainWindow", "Add, Update And Track Your Produce"))
         self.label_13.setText(_translate("MainWindow", "Track and Manage orders"))
@@ -617,6 +630,8 @@ class Ui_MainWindow(object):
         self.switchtodarkmodeCommandlinkbutton.setText(_translate("MainWindow", "Switch to darkmode"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Notifications"))
         
+        self.tabWidget.currentChanged.connect(self.setavalabilitytabclicked)
+        self.updateeditproduceTablewidget() 
         
     #logoutpushbuttonClicked
     def logoutpushbuttonClicked(self):
@@ -650,6 +665,39 @@ class Ui_MainWindow(object):
         )
         return connection
 
+    #setavalabilitytabclicked
+    def  setavalabilitytabclicked(self,index):
+            if index == 2 and self.tabWidget.tabText(2)=="Set Availability":
+                    QMessageBox.information(None,"Unfortunately!","This Section Is Under Maintainance!\n Come Back Later")
+            elif index == 0 and self.tabWidget.tabText(0)=="Add Produce":
+                from plyer import notification
+                notification.notify(
+                title="Image Upload",
+                message="Remember To uplode Your Farm Produce Image To Attract More Buyers!",
+                app_name="Farmers-Buyers-Market-linkaage System",
+                timeout=100
+                
+            )
+            elif index == 1 and self.tabWidget.tabText(1)=="Edit Produce":
+                from plyer import notification
+                notification.notify(
+                title="Products editing",
+                message="Remember To Edit  Products Correctly",
+                app_name="Farmers-Buyers-Market-linkaage System",
+                timeout=100
+                
+            )
+            elif index == 3 and self.tabWidget.tabText(3)=="View Produce":
+                from plyer import notification
+                notification.notify(
+                title="View Produce",
+                message="Here You Can View All Products You Upload \nYou Can Save Them As Different Formats Also e.g PDF,docx",
+                app_name="Farmers-Buyers-Market-linkaage System",
+                timeout=100
+                
+            )
+                    
+
      
      #changePasswordpushButtonclicked
     def changePasswordpushButtonclicked(self):
@@ -680,9 +728,117 @@ class Ui_MainWindow(object):
                 connection.commit()
                 cursor.close()
                 connection.close()
-    
-    
-    
+     #saveproduceaspushButton_viewproduceclicked
+    def saveproduceaspushButton_viewproduceclicked(self):
+        choice=self.saveproduceascomboBox_viewproduce.currentText()
+        
+        if choice=="PDF format":
+                from reportlab.lib.pagesizes import A4
+                from reportlab.pdfgen import canvas
+                
+                connection=self.connectagrimeshDB()
+                query = ("SELECT productname, category, quantity, price, location FROM produce")
+                cursor=connection.cursor()
+                cursor.execute(query)
+                records = cursor.fetchall()
+                file_name = "produce_report.pdf"
+                c = canvas.Canvas(file_name, pagesize=A4)
+                width, height = A4
+                c.setFont("Helvetica-Bold", 14)
+                c.drawString(200, height - 50, "Produce Data Report")
+                c.setFont("Helvetica-Bold", 12)
+                headers = ["Product Name", "Category", "Quantity", "Price", "Location"]
+                x_positions = [50, 150, 300, 400, 500]  
+                y_position = height - 80
+                for i, header in enumerate(headers):
+                   c.drawString(x_positions[i], y_position, header)
+                   
+                c.line(50, y_position - 5, 550, y_position - 5) 
+                c.setFont("Helvetica", 10)
+                y_position -= 20
+                for row_data in records:
+                        if y_position < 50:  
+                                c.showPage()
+                                y_position = height - 50
+                                c.setFont("Helvetica", 10)
+
+                        for col_idx, cell_data in enumerate(row_data):
+                                c.drawString(x_positions[col_idx], y_position, str(cell_data))
+
+                        y_position -= 20  
+
+                c.save()
+                import os
+
+                file_name = "produce_report.pdf"
+                file_path = os.path.abspath(file_name)
+                QMessageBox.information(None,"Saved",f"Image saved Successfully As {file_name} to \n\nLocation : {file_path}")
+                from plyer import notification
+                notification.notify(
+                                title="Success",
+                                message=f"{file_name} Saved successfully!",
+                                app_name="JustoSoftwares",
+                                timeout=600
+                                
+                        )
+
+                connection.close()
+                cursor.close()
+        elif choice=="Docx Format":
+                file_name = "produce_report.docx"
+                from saveProduceasdocx import save_to_docx
+                savedpath=save_to_docx(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savedpath}")
+                from plyer import notification
+                notification.notify(
+                                title="Success",
+                                message=f"{file_name} Saved successfully!",
+                                app_name="JustoSoftwares",
+                                timeout=600
+                                
+                        )
+        elif choice=="Json":
+                file_name = "produce_report.json"
+                from saveProduceasJson import save_to_json
+                savedjsonpath=save_to_json(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savedjsonpath}")
+                from plyer import notification
+                notification.notify(
+                                title="Success",
+                                message=f"{file_name} Saved successfully!",
+                                app_name="JustoSoftwares",
+                                timeout=600
+                                
+                        )
+        elif choice=="CSV":
+                file_name = "produce_report.csv"
+                from saveProduceasCsv import save_to_csv
+                savecsvpath=save_to_csv(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savecsvpath}")
+                from plyer import notification
+                notification.notify(
+                                title="Success",
+                                message=f"{file_name} Saved successfully!",
+                                app_name="JustoSoftwares",
+                                timeout=600
+                                
+                        )
+        else:
+                file_name = "produce_report.png"
+                from saveasScreenshot import save_as_screenshot
+                screenshhot=save_as_screenshot(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {screenshhot}")
+                from plyer import notification
+                notification.notify(
+                                title="Success",
+                                message=f"{file_name} Saved successfully!",
+                                app_name="JustoSoftwares",
+                                timeout=600
+                                
+                        )
+                
+
+             
     #saveprofileinfopushButton_profileclicked
     def saveprofileinfopushButton_profileclicked(self):
             try:
@@ -797,6 +953,139 @@ class Ui_MainWindow(object):
         self.centralwidget.setStyleSheet(dark_mode_stylesheet)  
         self.widget1.setStyleSheet(dark_mode_stylesheet)             
         self.widget.setStyleSheet(dark_mode_stylesheet)  
+        
+        
+   #addTheProducePushButtonClicked
+    def addTheProducePushButtonClicked(self):
+        productname=self.productnamelineEdit.text().lower()
+        category=self.productcategorycomboBox.currentText()
+        quantity=self.quantitylinedit.text()
+        price=self.pricelinedit.text()
+        location=self.locationlinedit.text()
+        imagepath=self.imageproducepath.text()
+        
+        if not productname or not location or not quantity or not price or not imagepath:
+                QMessageBox.information(None,"Error","All fields Are Required!")
+                return
+        else:
+                try:
+                        connection=self.connectagrimeshDB()
+                        cursor=connection.cursor()
+                        cursor.execute("""
+                                       CREATE TABLE IF NOT EXISTS produce(
+                                               
+                                               productname VARCHAR(20),
+                                               category TEXT,
+                                               quantity VARCHAR(20),
+                                               price INTEGER,
+                                               location TEXT,
+                                               imagepath VARCHAR(200)
+                                       )
+                                       
+                                       """)
+                        cursor.execute("""
+                                       INSERT INTO produce(productname,category,quantity,price,location,imagepath)
+                                       VALUES(%s,%s,%s,%s,%s,%s)
+                                       
+                                       """,(productname,category,quantity,price,location,imagepath))
+                        connection.commit()
+                        
+                        from plyer import notification
+                        notification.notify(
+                                title="Success",
+                                message=f"{productname} added successfully!",
+                                app_name="JustoSoftwares"
+                                
+                        )
+                        QMessageBox.information(None,"Error","Produce Added Successfully!")
+                        cursor.close()
+                        connection.close()
+                except psycopg2.Error as e:
+                        QMessageBox.information(None,"Error",f"An error Occurred {e}")
+    
+    #uploadProduceImagepushButtonClicked
+    def uploadProduceImagepushButtonClicked(self):
+        fileFilter="Images (*.png *.jpg *.BMP *.GIF *.TIFF *.webp)"
+        filepath,_=QFileDialog.getOpenFileName(None,"SELCT IMAGE FILE","",fileFilter)
+        if filepath:
+                from PyQt6.QtGui import QPixmap
+                QMessageBox.information(None,"Success","Image uploaded Successfully!")
+                self.imageproducepath.setText(filepath)
+                pixmap = QPixmap(filepath)
+                self.imagesettinglabel.setPixmap(pixmap)
+                self.imagesettinglabel.setScaledContents(True)
+           
+        else:
+              QMessageBox.information(None,"Success","Image Not Uploaded Try Again!")  
+              self.imageproducepath.setText("No Image selected")
+
+    #updateviewProduceTableWidget
+    def updateviewProduceTableWidget(self):
+                connection = self.connectagrimeshDB()
+                cursor = connection.cursor()
+
+                # Fetch data
+                query = "SELECT productname, category, quantity, price, location FROM produce"
+                cursor.execute(query)
+                records = cursor.fetchall()
+
+                # Close connection
+                cursor.close()
+                connection.close()
+
+                # Clear existing rows only 
+                self.viewProducetableWidget.setRowCount(0)
+
+                for row_idx, row_data in enumerate(records):
+                        self.viewProducetableWidget.insertRow(row_idx)  
+                        for col_idx, cell_data in enumerate(row_data):
+                                self.viewProducetableWidget.setItem(row_idx, col_idx, QTableWidgetItem(str(cell_data)))
+                                
+                                
+     #updateeditproduceTablewidget
+    def updateeditproduceTablewidget(self):
+        connection = self.connectagrimeshDB()
+        cursor = connection.cursor()
+
+        # Fetch data
+        query = ("SELECT productname, category, quantity, price, location FROM produce")
+        cursor.execute(query)
+        records = cursor.fetchall()
+
+        # Close connection
+        cursor.close()
+        connection.close()
+        
+
+        # Clear existing rows only 
+        self.editproducetableWidget.setRowCount(0)
+                
+        for row_idx, row_data in enumerate(records):
+                self.editproducetableWidget.insertRow(row_idx)  
+                for col_idx, cell_data in enumerate(row_data):
+                        self.editproducetableWidget.setItem(row_idx, col_idx, QTableWidgetItem(str(cell_data)))
+        
+                        btn_edit = QPushButton("Edit")
+                        btn_edit.clicked.connect(lambda _, r=row_idx: self.edit_product(r))  
+                        self.editproducetableWidget.setCellWidget(row_idx, 5, btn_edit)
+
+               
+      #edit_product
+    def edit_product(self,row):
+         details = [self.editproducetableWidget.item(row, col).text() for col in range(5)]
+         from editproduceDialog import Ui_editproduceDialog
+         self.editproducedialoG = QtWidgets.QMainWindow()
+         self.ui = Ui_editproduceDialog()
+         self.ui.setupUi(self.editproducedialoG)
+         self.ui.fillInLineEdits(details)
+         self.editproducedialoG.setFixedSize(384, 300)
+         
+         self.ui.editandsavepushButton_editproduce.clicked.connect(lambda: self.ui.editandsavepushButton_editproduceClicked(details))
+         self.editproducedialoG.show()
+         
+        
+
+
 
 if __name__ == "__main__":
     import sys

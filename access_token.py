@@ -37,10 +37,10 @@ request = {
     "Password": LipanaMpesaPpassword.decode_password,
     "Timestamp": LipanaMpesaPpassword.lipa_time,
     "TransactionType": "CustomerPayBillOnline",
-    "Amount": 1,
+    "Amount": 100,
     "PartyA": 254793031269,
     "PartyB": LipanaMpesaPpassword.Business_short_code,
-    "PhoneNumber": 254708008706,
+    "PhoneNumber": 254797747846,
     "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
     "AccountReference": "Justo Pizo",
     "TransactionDesc": "Testing stk push"

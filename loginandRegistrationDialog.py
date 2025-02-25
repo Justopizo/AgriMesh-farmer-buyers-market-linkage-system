@@ -87,7 +87,7 @@ class Ui_loginOrregistrationDialog(object):
         password=self.passswordlinedit.text()
         role=self.rolecomboBox.currentText()
         
-        if not name or not password or not len(password)<=4:
+        if not name or not password or  len(password)>4:
             
             QMessageBox.warning(None,"Error","All Fields Are Required!\n And Password must be less than 4 characters!")
             self.passswordlinedit.clear()
@@ -122,6 +122,7 @@ class Ui_loginOrregistrationDialog(object):
                     
                     if role=="Farmer":
                         QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Farmer.Let's Grow Together!")
+                         
                         from farmersDashboard import Ui_MainWindow
                         self.farmerdash = QtWidgets.QMainWindow()
                         self.ui = Ui_MainWindow()
@@ -129,8 +130,19 @@ class Ui_loginOrregistrationDialog(object):
                         self.farmerdash.setFixedSize(953, 717)
                         self.farmerdash.show()
                         QtWidgets.QApplication.instance().activeWindow().close()
+                        
                     elif role=="Buyer":
                         QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Buyer.Find The Best Deals Today!")
+                        
+                        from buyerDashboard import Ui_buyerDashboardDialog
+                        self.buyerdash = QtWidgets.QMainWindow()
+                        self.ui = Ui_buyerDashboardDialog()
+                        self.ui.setupUi(self.buyerdash)
+                        self.buyerdash.setFixedSize(954, 719)
+                        self.buyerdash.show()
+                        QtWidgets.QApplication.instance().activeWindow().close()
+                
+                        
                     else:
                         QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Master Admin!")
                 else:
@@ -146,7 +158,7 @@ class Ui_loginOrregistrationDialog(object):
         password=self.passswordlinedit.text()
         role=self.rolecomboBox.currentText()
         
-        if not name or not password or not len(password)<=4:
+        if not name or not password or  len(password)>4:
             QMessageBox.warning(None,"Error","All Fields Are Required!\n And Password must be less than 4 characters!")
             self.passswordlinedit.clear()
             self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")
@@ -180,7 +192,9 @@ class Ui_loginOrregistrationDialog(object):
                                """,(name,password,role))
                 connection.commit()
                 QMessageBox.information(None,"Success","Registration Successful!")
+                
                 if role=="Farmer":
+                    
                     from farmersDashboard import Ui_MainWindow
                     self.farmerdash = QtWidgets.QMainWindow()
                     self.ui = Ui_MainWindow()
@@ -189,13 +203,21 @@ class Ui_loginOrregistrationDialog(object):
                     self.farmerdash.show()
                     self.name=self.usernamelineEdit.text().lower()
                     QtWidgets.QApplication.instance().activeWindow().close()
+                    
                 elif role=="Buyer":
                     QMessageBox.information(None,"Success","Registration Successful!")
-                    pass
-                else:
-                    QMessageBox.information(None,"Success","Registration Successful!")
-                    pass
                     
+                    from buyerDashboard import Ui_buyerDashboardDialog
+                    self.buyerdash = QtWidgets.QMainWindow()
+                    self.ui = Ui_buyerDashboardDialog()
+                    self.ui.setupUi(self.buyerdash)
+                    self.buyerdash.setFixedSize(954, 719)
+                    self.buyerdash.show()
+                    QtWidgets.QApplication.instance().activeWindow().close()
+                    
+                else:
+                    QMessageBox.information(None,"Success","Registration Successful!\nWelcome Admin")
+                                        
     
 
     def retranslateUi(self, loginOrregistrationDialog):

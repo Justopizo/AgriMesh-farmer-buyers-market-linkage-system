@@ -1,6 +1,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+from PyQt6.QtWidgets import *
+import psycopg2
 
 class Ui_editproduceDialog(object):
     def setupUi(self, editproduceDialog):
@@ -43,8 +44,57 @@ class Ui_editproduceDialog(object):
         self.editandsavepushButton_editproduce.setStyleSheet("font: 10pt \"MS Shell Dlg 2\";")
         self.editandsavepushButton_editproduce.setObjectName("editandsavepushButton_editproduce")
 
+        
+
         self.retranslateUi(editproduceDialog)
         QtCore.QMetaObject.connectSlotsByName(editproduceDialog)
+        
+    #fill in the line edits
+    def fillInLineEdits(self,details):
+        product_name, category, quantity, price, location = details
+
+        self.productnamelineEdit_editproduce.setText(details[0])
+        self.quantitylinedit_editproduce.setText(details[2])
+        self.pricelinedit_editproduce.setText(details[3])
+        self.locationlinedit_editproduce.setText(details[4])
+        
+    #editandsavepushButton_editproduceClicked
+    def editandsavepushButton_editproduceClicked(self,details):
+        try:
+            connection=psycopg2.connect(
+                
+                user="postgres",
+                host="localhost",
+                password="3062",
+                database="agrimesh"
+            )
+            if not self.productnamelineEdit_editproduce.text() or not self.quantitylinedit_editproduce.text() or not self.pricelinedit_editproduce.text() or not self.locationlinedit_editproduce.text():
+                QMessageBox.information(None,"Error","All Fields Are Required!")
+                return
+            cursor=connection.cursor()
+            cursor.execute("""
+                           UPDATE produce SET productname=%s,quantity=%s,price=%s,location=%s 
+                           WHERE productname=%s;
+                           """,(self.productnamelineEdit_editproduce.text(),self.quantitylinedit_editproduce.text(),int(self.pricelinedit_editproduce.text()),self.locationlinedit_editproduce.text(),details[0]))
+            
+            
+            
+            connection.commit()
+            QMessageBox.information(None,"Success","Produce Edited And Saved Successfully!")
+            
+            from plyer import notification
+            notification.notify(
+                title="Saved successfully!",
+                message=f"Produce: '{self.productnamelineEdit_editproduce.text()} Was Edited And Saved Successfully!'",
+                app_name="Farmers-Buyers-Market-linkaage System",
+                timeout=70
+                
+            )
+            QtWidgets.QApplication.instance().activeWindow().close()
+            cursor.close()
+            connection.close()
+        except psycopg2.Error as e:
+            QMessageBox.warning(None,"Error",f"Error Occurred: {e}")
 
     def retranslateUi(self, editproduceDialog):
         _translate = QtCore.QCoreApplication.translate

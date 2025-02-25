@@ -1,0 +1,40 @@
+  from reportlab.lib.pagesizes import A4
+                from reportlab.pdfgen import canvas
+                
+                connection=self.connectagrimeshDB()
+                query = "SELECT productname, category, quantity, price, location FROM produce")
+                cursor=connection.cursor()
+                cursor.execute(query)
+                records = cursor.fetchall()
+                file_name = "produce_report.pdf"
+                c = canvas.Canvas(file_name, pagesize=A4)
+                width, height = A4
+                c.setFont("Helvetica-Bold", 14)
+                c.drawString(200, height - 50, "Produce Data Report")
+                c.setFont("Helvetica-Bold", 12)
+                headers = ["Product Name", "Category", "Quantity", "Price", "Location"]
+                x_positions = [50, 150, 300, 400, 500]  
+                y_position = height - 80
+                for i, header in enumerate(headers):
+                   c.drawString(x_positions[i], y_position, header)
+                   
+                c.line(50, y_position - 5, 550, y_position - 5) 
+                c.setFont("Helvetica", 10)
+                y_position -= 20
+                for row_data in records:
+                        if y_position < 50:  
+                                c.showPage()
+                                y_position = height - 50
+                                c.setFont("Helvetica", 10)
+
+                        for col_idx, cell_data in enumerate(row_data):
+                                c.drawString(x_positions[col_idx], y_position, str(cell_data))
+
+                        y_position -= 20  
+
+                c.save()
+                import os
+
+                file_name = "produce_report.pdf"
+                file_path = os.path.abspath(file_name)
+                QMessageBox.information(None,"Saved",f"Image saved Successfully As {file_name} to \nLocation : {file_path}")

@@ -80,6 +80,7 @@ class Ui_forgotpasswordDialog(object):
                 
             if len(newpassword)>4:
                 QMessageBox.warning(None,"Error","Password Must Be below 4 characters!")
+                return
                     
             connection=psycopg2.connect(
                 host="localhost",

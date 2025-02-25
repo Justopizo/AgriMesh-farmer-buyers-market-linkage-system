@@ -1,0 +1,1462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>953</width>
+    <height>717</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Farmer DashBoard- AgriMesh Company</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>261</width>
+      <height>731</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(31, 0, 93);</string>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>221</width>
+       <height>651</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="dashboardwidgetpushButton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Dashboard</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="managefarmproducePushButton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Manage Farm Produce</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="viewordersPushButton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>View Orders</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="profilepushButton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Profile</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="salespushbutton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Sales</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="settingspushbutton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="logoutpushbutton">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Logout</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="widget_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>0</y>
+      <width>681</width>
+      <height>731</height>
+     </rect>
+    </property>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>681</width>
+       <height>711</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="dashboardPagewidget">
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>60</y>
+         <width>311</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Key Metrics</string>
+       </property>
+       <widget class="QLabel" name="label_26">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>81</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>Total Sales</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="totalsaleslcdNumber">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>64</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_27">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>30</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>Pending Orders</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="pendingordersLCDnumber">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>60</y>
+          <width>64</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_28">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>111</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>Available Produce</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="availableproduceLCDnumber">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>64</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_25">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>10</y>
+         <width>331</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Your Farming Business At A Glance</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>60</y>
+         <width>361</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Quick Actions</string>
+       </property>
+       <widget class="QCommandLinkButton" name="settingscommandLinkButton_dashboard">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>222</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Settings</string>
+        </property>
+       </widget>
+       <widget class="QCommandLinkButton" name="profilecommandLinkButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>222</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>profile</string>
+        </property>
+       </widget>
+       <widget class="QCommandLinkButton" name="viewOrderscommandLinkButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>222</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>View Ordes</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>310</y>
+         <width>681</width>
+         <height>411</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Table and Charts</string>
+       </property>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>111</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>sales By Category</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_30">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>20</y>
+          <width>111</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>Sales By product</string>
+        </property>
+       </widget>
+       <widget class="QGraphicsView" name="salesbycategoryGraphicsview">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>311</width>
+          <height>341</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QGraphicsView" name="salesbyProductnamegraphicsview">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>50</y>
+          <width>351</width>
+          <height>341</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="managefarmproducewidgetpage">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>110</y>
+         <width>681</width>
+         <height>611</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="AddproduceTab">
+        <attribute name="title">
+         <string>Add Produce</string>
+        </attribute>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>20</y>
+           <width>111</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Product Name</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="productnamelineEdit">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>20</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>70</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Product Category</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="productcategorycomboBox">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>70</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>Fruits</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Vegetables</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Dairy</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cereals</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Others</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QLabel" name="label_3">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>120</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Quantity</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="quantitylinedit">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>120</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>in terms of Kilograms</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>180</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Price</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pricelinedit">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>180</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>290</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Image Produce Path</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="imageproducepath">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>290</y>
+           <width>231</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_6">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>240</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Location</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="locationlinedit">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>240</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="uploadProduceImagepushButton">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>280</y>
+           <width>171</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Upload Produce photo</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="imagesettinglabel">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>320</y>
+           <width>200</width>
+           <height>200</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid black</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="addTheProducePushButton">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>540</y>
+           <width>171</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Add The Produce</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="editAvailabilityTab">
+        <attribute name="title">
+         <string>Edit Produce</string>
+        </attribute>
+        <widget class="QTableWidget" name="editproducetableWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>671</width>
+           <height>331</height>
+          </rect>
+         </property>
+         <column>
+          <property name="text">
+           <string>Product Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Category</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Quantity</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Price</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Location</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Action</string>
+          </property>
+         </column>
+        </widget>
+        <widget class="QPushButton" name="saveChanges_editproducewidgetpushButton">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>360</y>
+           <width>141</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save Changes</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="setAvailabilityTab">
+        <attribute name="title">
+         <string>Set Availability</string>
+        </attribute>
+        <widget class="QLabel" name="label_8">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>111</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Product Name</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="productnameSetAvalabilityLineedit">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>30</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_9">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Quantity</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="quantitylinedit_setavailability">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>80</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>in terms of Kilograms</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_10">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>140</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Price</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pricelinedit_setAvailability">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>140</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_11">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>200</y>
+           <width>131</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Set Availability</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="availableradioButton">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>200</y>
+           <width>95</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Available</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="outOfStockradioButton">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>240</y>
+           <width>141</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Out Of Stock</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="savepushButton_setAvailability">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>320</y>
+           <width>93</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="viewproduceTab">
+        <attribute name="title">
+         <string>View Produce</string>
+        </attribute>
+        <widget class="QTableWidget" name="viewProducetableWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>681</width>
+           <height>411</height>
+          </rect>
+         </property>
+         <column>
+          <property name="text">
+           <string>Product Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Category</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Quantity</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Price</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Location</string>
+          </property>
+         </column>
+        </widget>
+        <widget class="QLabel" name="label_12">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>430</y>
+           <width>201</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save Produce Details As</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="saveproduceascomboBox_viewproduce">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>430</y>
+           <width>261</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string>PDF format</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Docx Format</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Json</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CSV </string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ScreenShot</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QPushButton" name="saveproduceaspushButton_viewproduce">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>480</y>
+           <width>93</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>40</y>
+         <width>311</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Add, Update And Track Your Produce</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="vieworderspagewidget">
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>30</y>
+         <width>261</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Track and Manage orders</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="vieworderstableWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>100</y>
+         <width>681</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <column>
+        <property name="text">
+         <string>Buyer Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Phone No.</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Product</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Quantity</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Price</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Action</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QLabel" name="label_14">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>480</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Filter By</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="filterorderscomboBox">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>480</y>
+         <width>231</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Quantity</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Price</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="profilepagewidget">
+      <widget class="QLabel" name="label_15">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>20</y>
+         <width>281</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>View and Edit Pesonal Details</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>90</y>
+         <width>51</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="namelineEdit_profile">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>90</y>
+         <width>311</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>140</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Phone No</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="phoneNolinedit_profile">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>140</y>
+         <width>311</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>200</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Location</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="locationlineedit_profile">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>200</y>
+         <width>311</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>260</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>PaymentAccount</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="paymentaccouncomboBox_profile">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>260</y>
+         <width>281</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>M-PESA</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>AirtelMoney</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>KCB</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLineEdit" name="paymentaccountChoicelinedit_profile">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>310</y>
+         <width>281</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="saveprofileinfopushButton_profile">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>360</y>
+         <width>93</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="salespagewidget">
+      <widget class="QLabel" name="label_20">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>40</y>
+         <width>271</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Sales Overview and Reports</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="salestableWidget_sales">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>70</y>
+         <width>671</width>
+         <height>271</height>
+        </rect>
+       </property>
+       <column>
+        <property name="text">
+         <string>Product Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Buyer Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Price</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Status</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QLabel" name="label_21">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>380</y>
+         <width>231</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Sales Sales Reports As?</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="salesreportcomboBox_sales">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>380</y>
+         <width>261</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>PDF</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Docx</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CSV</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="saveandExportreportpushButton_sales">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>450</y>
+         <width>191</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Save and Export Report</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="settingpage">
+      <widget class="QGroupBox" name="accountsettingsgroupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>80</y>
+         <width>371</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Account Settings</string>
+       </property>
+       <widget class="QLabel" name="label_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+        </property>
+        <property name="text">
+         <string>Change Password</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_23">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>60</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Old Password</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_24">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>New Password</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="oldpasswordlineEdit_settings">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>60</y>
+          <width>221</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="newpasswordlinedit_settings">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>100</y>
+          <width>221</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="changePasswordpushButton">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>150</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Change</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>320</y>
+         <width>371</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Preferences</string>
+       </property>
+       <widget class="QCommandLinkButton" name="requestdeletionofAccountcommandLinkButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>271</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Request deletion of account?</string>
+        </property>
+       </widget>
+       <widget class="QCommandLinkButton" name="switchtodarkmodeCommandlinkbutton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>271</width>
+          <height>48</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Switch to darkmode</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>480</y>
+         <width>371</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Notifications</string>
+       </property>
+       <widget class="QTextEdit" name="notificationstextEdit_settingspage">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>371</width>
+          <height>211</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="logoutpage"/>
+     <widget class="QWidget" name="lo"/>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
