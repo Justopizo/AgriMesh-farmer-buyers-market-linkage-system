@@ -130,7 +130,8 @@ class Ui_MainWindow(object):
         self.timer = QTimer()
         self.timer.timeout.connect(self.updateviewProduceTableWidget)
         self.timer.timeout.connect(self.updateeditproduceTablewidget)
-        self.timer.start(5000) 
+        self.timer.timeout.connect(self.updateviewProducepageTableWidget)
+        self.timer.start(1000) 
         
         
         self.groupBox_5 = QtWidgets.QGroupBox(parent=self.dashboardPagewidget)
@@ -347,6 +348,7 @@ class Ui_MainWindow(object):
         self.filterorderscomboBox.setObjectName("filterorderscomboBox")
         self.filterorderscomboBox.addItem("")
         self.filterorderscomboBox.addItem("")
+        self.filterorderscomboBox.currentTextChanged.connect(self.filterorderstable)
         self.stackedWidget.addWidget(self.vieworderspagewidget)
         self.profilepagewidget = QtWidgets.QWidget()
         self.profilepagewidget.setObjectName("profilepagewidget")
@@ -505,7 +507,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Farmer DashBoard- AgriMesh Company"))
         self.dashboardwidgetpushButton.setText(_translate("MainWindow", "Dashboard"))
-        self.managefarmproducePushButton.setText(_translate("MainWindow", "Manage Farm Produce"))
+        self.managefarmproducePushButton.setText(_translate("MainWindow", "Farmers' Market"))
         self.viewordersPushButton.setText(_translate("MainWindow", "View Orders"))
         self.profilepushButton.setText(_translate("MainWindow", "Profile"))
         self.salespushbutton.setText(_translate("MainWindow", "Sales"))
@@ -531,7 +533,7 @@ class Ui_MainWindow(object):
         self.productcategorycomboBox.setItemText(3, _translate("MainWindow", "Cereals"))
         self.productcategorycomboBox.setItemText(4, _translate("MainWindow", "Others"))
         self.label_3.setText(_translate("MainWindow", "Quantity"))
-        self.quantitylinedit.setPlaceholderText(_translate("MainWindow", "in terms of Kilograms"))
+        self.quantitylinedit.setPlaceholderText(_translate("MainWindow", "e.g 2kg,1L or 2"))
         self.label_4.setText(_translate("MainWindow", "Price"))
         self.label_5.setText(_translate("MainWindow", "Image Produce Path"))
         self.label_6.setText(_translate("MainWindow", "Location"))
@@ -593,7 +595,7 @@ class Ui_MainWindow(object):
         item = self.vieworderstableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Price"))
         item = self.vieworderstableWidget.horizontalHeaderItem(5)
-        item.setText(_translate("MainWindow", "Action"))
+        item.setText(_translate("MainWindow", "Payment Method"))
         self.label_14.setText(_translate("MainWindow", "Filter By"))
         self.filterorderscomboBox.setItemText(0, _translate("MainWindow", "Quantity"))
         self.filterorderscomboBox.setItemText(1, _translate("MainWindow", "Price"))
@@ -632,7 +634,92 @@ class Ui_MainWindow(object):
         
         self.tabWidget.currentChanged.connect(self.setavalabilitytabclicked)
         self.updateeditproduceTablewidget() 
+        self.updateviewProducepageTableWidget()
         
+    #filterorderstable
+    def filterorderstable(self):
+        from PyQt6.QtCore import Qt
+        selected_filter = self.filterorderscomboBox.currentText()
+
+        if selected_filter == "Quantity":
+              column_index = 3  
+        elif selected_filter == "Price":
+              column_index =4
+        else:
+              return  
+
+    
+        self.vieworderstableWidget.sortItems(column_index, Qt.SortOrder.AscendingOrder)
+
+        
+    #updateviewProducepageTableWidget
+    def updateviewProducepageTableWidget(self):
+            from functools import partial
+            try:
+                    connection=self.connectagrimeshDB()
+                    cursor=connection.cursor()
+                    cursor.execute("""
+                                   SELECT * FROM vieworders  
+                                   
+                                   """)
+                    
+                    results=cursor.fetchall()
+                    
+                    self.vieworderstableWidget.setColumnCount(9)
+                    headers = [self.vieworderstableWidget.horizontalHeaderItem(i).text() if self.vieworderstableWidget.horizontalHeaderItem(i) else f"Column {i+1}" for i in range(9)]
+                    headers[6]="Status"
+                    headers[7] = "Cancel Order"
+                    headers[8] = "Dispatch Order"
+                    
+
+                    self.vieworderstableWidget.setHorizontalHeaderLabels(headers)
+
+                    self.vieworderstableWidget.setRowCount(0)
+                    for rowID,rowData in enumerate(results):
+                            self.vieworderstableWidget.insertRow(rowID)
+                            for colID,colData in enumerate(rowData):
+                                    self.vieworderstableWidget.setItem(rowID,colID,QTableWidgetItem(str(colData)))
+                            btn_add = QPushButton("Cancel Order")
+                            btn_add.clicked.connect(lambda _, r=rowData: self.cancelOrder(r))
+                            self.vieworderstableWidget.setCellWidget(rowID, 7, btn_add)
+                            
+                            btn_adddispatch = QPushButton("Accept and Dispatch")
+                            btn_adddispatch.clicked.connect(lambda _, r=rowData: self.acceptAndDispatchOrder(r))
+                            self.vieworderstableWidget.setCellWidget(rowID, 8, btn_adddispatch)
+                           
+
+
+                            
+                           
+                    self.vieworderstableWidget.resizeColumnsToContents()        
+                    cursor.close()
+                    connection.close()
+            except psycopg2.Error as e:
+                QMessageBox.information(None,"Database Error",f"Error Occurred {e}")
+                
+       #cancelOrder
+    def cancelOrder(self,row):
+        # buyername,phoneno,productname,quantity,price,paymentmethod=row
+         try:
+                connection=self.connectagrimeshDB()
+                cursor=connection.cursor()
+                cursor.execute("UPDATE vieworders SET status = 'Cancelled' WHERE buyername = %s AND phoneno = %s;",(str(row[0]),str(row[1])))
+                cursor.execute("""
+                                   DELETE FROM  vieworders WHERE buyername=%s and phoneno=%s; 
+                                   
+                                   """,(str(row[0]),str(row[1])))
+                connection.commit()
+                QMessageBox.information(None,"Cancel Order","Order Cancelled Successsfully!")
+                cursor.close()
+                connection.close()
+         except psycopg2.Error as e:
+                QMessageBox.information(None,"Database Error",f"Error Occurred {e}")
+                
+    
+    
+    #acceptAndDispatchOrder
+    def acceptAndDispatchOrder(self,row):
+            QMessageBox.information(None,"Order Confirmed","Order was Confirmed. And The buyer Notified!")
     #logoutpushbuttonClicked
     def logoutpushbuttonClicked(self):
         from loginandRegistrationDialog import Ui_loginOrregistrationDialog
@@ -669,35 +756,7 @@ class Ui_MainWindow(object):
     def  setavalabilitytabclicked(self,index):
             if index == 2 and self.tabWidget.tabText(2)=="Set Availability":
                     QMessageBox.information(None,"Unfortunately!","This Section Is Under Maintainance!\n Come Back Later")
-            elif index == 0 and self.tabWidget.tabText(0)=="Add Produce":
-                from plyer import notification
-                notification.notify(
-                title="Image Upload",
-                message="Remember To uplode Your Farm Produce Image To Attract More Buyers!",
-                app_name="Farmers-Buyers-Market-linkaage System",
-                timeout=100
-                
-            )
-            elif index == 1 and self.tabWidget.tabText(1)=="Edit Produce":
-                from plyer import notification
-                notification.notify(
-                title="Products editing",
-                message="Remember To Edit  Products Correctly",
-                app_name="Farmers-Buyers-Market-linkaage System",
-                timeout=100
-                
-            )
-            elif index == 3 and self.tabWidget.tabText(3)=="View Produce":
-                from plyer import notification
-                notification.notify(
-                title="View Produce",
-                message="Here You Can View All Products You Upload \nYou Can Save Them As Different Formats Also e.g PDF,docx",
-                app_name="Farmers-Buyers-Market-linkaage System",
-                timeout=100
-                
-            )
-                    
-
+          
      
      #changePasswordpushButtonclicked
     def changePasswordpushButtonclicked(self):

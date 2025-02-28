@@ -1,8 +1,10 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import QTimer
 from PyQt6.QtWidgets import *
-import plyer
 import psycopg2
+from functools import partial
+from farmersDashboard import Ui_MainWindow
 
 class Ui_buyerDashboardDialog(object):
     def setupUi(self, buyerDashboardDialog):
@@ -129,6 +131,7 @@ class Ui_buyerDashboardDialog(object):
         self.helpandsupporttextEdit.setObjectName("helpandsupporttextEdit")
         self.stackedWidget.addWidget(self.dashboardpage)
         self.browseproductspage = QtWidgets.QWidget()
+        
         self.browseproductspage.setObjectName("browseproductspage")
         self.browseproductsTableWidget = QtWidgets.QTableWidget(parent=self.browseproductspage)
         self.browseproductsTableWidget.setGeometry(QtCore.QRect(0, 10, 681, 411))
@@ -154,6 +157,9 @@ class Ui_buyerDashboardDialog(object):
         self.searchproductLinedit = QtWidgets.QLineEdit(parent=self.browseproductspage)
         self.searchproductLinedit.setGeometry(QtCore.QRect(260, 460, 331, 22))
         self.searchproductLinedit.setStyleSheet("font: 10pt \"MS Shell Dlg 2\";")
+        
+        self.searchproductLinedit.textChanged.connect(self.searchproductLinedittextchabged)
+        
         self.searchproductLinedit.setObjectName("searchproductLinedit")
         self.stackedWidget.addWidget(self.browseproductspage)
         self.myorderspage = QtWidgets.QWidget()
@@ -269,6 +275,7 @@ class Ui_buyerDashboardDialog(object):
         self.newpasswordlinedit_settings.setObjectName("newpasswordlinedit_settings")
         self.changePasswordpushButton = QtWidgets.QPushButton(parent=self.accountsettingsgroupBox)
         self.changePasswordpushButton.setGeometry(QtCore.QRect(110, 150, 93, 28))
+        self.changePasswordpushButton.clicked.connect(self.changePasswordpushButtonClicked)
         self.changePasswordpushButton.setObjectName("changePasswordpushButton")
         self.stackedWidget.addWidget(self.settingspage)
 
@@ -279,10 +286,10 @@ class Ui_buyerDashboardDialog(object):
         _translate = QtCore.QCoreApplication.translate
         buyerDashboardDialog.setWindowTitle(_translate("buyerDashboardDialog", "Buyer-Agrimesh Company"))
         self.dashboardwidgetpushButton.setText(_translate("buyerDashboardDialog", "Dashboard"))
-        self.browseproductspushbutton.setText(_translate("buyerDashboardDialog", "Browse Products"))
-        self.myorderspushbutton.setText(_translate("buyerDashboardDialog", "My Orders"))
+        self.browseproductspushbutton.setText(_translate("buyerDashboardDialog", "Market Place"))
+        self.myorderspushbutton.setText(_translate("buyerDashboardDialog", "Orders History"))
         self.cartpushbutton.setText(_translate("buyerDashboardDialog", "Cart"))
-        self.paymentpushbutton.setText(_translate("buyerDashboardDialog", "Payment"))
+        self.paymentpushbutton.setText(_translate("buyerDashboardDialog", "Payment History"))
         self.profilepushbutton.setText(_translate("buyerDashboardDialog", "Profile"))
         self.settingspushbutton.setText(_translate("buyerDashboardDialog", "Settings"))
         self.logoutbutton.setText(_translate("buyerDashboardDialog", "Logout"))
@@ -346,6 +353,450 @@ class Ui_buyerDashboardDialog(object):
         self.label_23.setText(_translate("buyerDashboardDialog", "Old Password"))
         self.label_24.setText(_translate("buyerDashboardDialog", "New Password"))
         self.changePasswordpushButton.setText(_translate("buyerDashboardDialog", "Change"))
+        
+        self.updateprofilebutton.clicked.connect(self.updateprofilebuttonClicked)
+        self.newpasswordlinedit_settings.setPlaceholderText("Less than 4 Characters")
+        self.oldpasswordlineEdit_settings.setPlaceholderText("Less than 4 Characters")
+        self.canceledoRders=0
+        self.totalitemInCart=0
+        self.totalorders=0
+        
+        
+        self.updatepaymentTableWidget()
+        self.updatebrowseproductsTableWidget2()
+        self.updatebrowseproductsTableWidget()
+        self.updatecart_TableWidget()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updatebrowseproductsTableWidget)
+        self.timer.timeout.connect(self.updatecart_TableWidget)
+        self.timer.timeout.connect(self.updatebrowseproductsTableWidget2)
+        self.timer.timeout.connect(self.scrollHelpAndSupportText)
+        self.timer.timeout.connect(self.checkForCancelledOrders)
+        
+        self.updateqlcdDisplays()
+        
+        self.timer.start(500) 
+        self.cancelledordersLCDdisplay.display(self.canceledoRders)
+        self.totalorderslcdNumber.display(self.totalorders)
+        self.ordersInCartLCDnumber.display(self.totalitemInCart)
+
+        self.help_text = """
+<html>
+<head>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h2, h3 { margin: 5px; }
+        p { margin: 2px; }
+    </style>
+</head>
+<body>
+    <h2>Help Line</h2>
+    <p>Phone No: 07930312 69</p>
+    <p>Email: justopizo01@gmail.com</p>
+    <h3>Credits</h3>
+    <p>Senior Developer and Designer: Justin Omare</p>
+    <p>Junior Developers:</p>
+    <p>Godwin Kimutai - Database Structuring</p>
+    <p>Solomon Nyongesa - Assistant Database Administrator</p>
+    <p>Gloria Mongasi - GUI Designer</p>
+    <p>Elton Manyasa - Ideas Generator</p>
+    <p>Jerry Scotch - Project Documentation and System Design Supervisor</p>
+    <p><em>Motto: Software that has no limits</em></p>
+</body>
+</html>
+"""
+
+
+
+        self.helpandsupporttextEdit.setHtml(self.help_text)
+        self.helpandsupporttextEdit.setReadOnly(True)  
+
+
+
+
+
+
+    def scrollHelpAndSupportText(self):
+    
+         scrollbar = self.helpandsupporttextEdit.verticalScrollBar()
+         scrollbar.setValue(scrollbar.value() + 1)
+
+
+         if scrollbar.value() >= scrollbar.maximum():
+                scrollbar.setValue(0)
+                
+     
+
+    def checkForCancelledOrders(self):
+     try:
+        connection = Ui_MainWindow.connectagrimeshDB(self)
+        cursor = connection.cursor()
+        
+        cursor.execute("SELECT buyername, productname FROM vieworders WHERE status = 'Cancelled';")
+        cancelled_orders = cursor.fetchall()
+
+        if cancelled_orders:
+            for order in cancelled_orders:
+                buyername, productname = order
+                self.showNotification(f"Order for {productname} has been cancelled By The Farmer!.")
+            
+            cursor.execute("DELETE FROM vieworders WHERE status = 'Cancelled';")
+            connection.commit()
+        
+        cursor.close()
+        connection.close()
+     except psycopg2.Error as e:
+        print(f"Database Error: {e}")
+
+    def showNotification(self, message):
+         QMessageBox.warning(self, "Order Cancelled", message)
+
+
+           
+
+
+    #updateqlcdDisplays
+    def updateqlcdDisplays(self):
+        self.cancelledordersLCDdisplay.display(self.canceledoRders)
+        self.totalorderslcdNumber.display(self.totalorders)
+        self.ordersInCartLCDnumber.display(self.totalitemInCart)
+            
+    #changePasswordpushButtonClicked
+    def changePasswordpushButtonClicked(self):
+            oldpassword=self.oldpasswordlineEdit_settings.text()
+            newpassword=self.newpasswordlinedit_settings.text()
+            
+            if not oldpassword or not newpassword:
+                QMessageBox.information(None,"Error","All Fields are required!")
+                return
+            elif len(oldpassword)>4 or len(newpassword)>4:
+                QMessageBox.information(None,"Error","Password Must be Below 4 Characters!")
+                return
+                    
+            else:
+                    try:
+                        
+                        connection=Ui_MainWindow.connectagrimeshDB(self)
+                        cursor=connection.cursor()
+                        cursor.execute("SELECT 1 FROM userinfo WHERE password=%s;",(oldpassword,))
+                        userexists=cursor.fetchone()
+                        if userexists:
+                                cursor.execute("UPDATE userinfo SET password=%s WHERE password=%s;",(newpassword,oldpassword))
+                                connection.commit()
+                                QMessageBox.information(None,"Error","Passsword Changed Successfully!")
+                        else:
+                             QMessageBox.information(None,"Error","Incorrect Password!\nDoesnt exist in Our Database")   
+                             return
+                        cursor.close()
+                        connection.close()
+                    except psycopg2.Error as e:
+                        QMessageBox.information(None,"Error",f"Error  Occured: {e}")
+                    
+
+    #updateprofilebuttonClicked
+    def updateprofilebuttonClicked(self):
+            name=self.namelineEdit_seettingspage.text().lower()
+            location=self.locationlineEdit_seettingspage_2.text()
+            phoneno=self.phoneNoineEdit_seettingspage_2.text()
+            
+            if not name or not location or not phoneno:
+                    QMessageBox.information(None,"Error","All Fields are required!")
+                    return
+            else:
+                    try:
+                            connection=Ui_MainWindow.connectagrimeshDB(self)
+                            cursor=connection.cursor()
+                            cursor.execute("""CREATE TABLE IF NOT EXISTS buyerinfo(
+                                    name VARCHAR(40),
+                                    location VARCHAR(40),
+                                    phoneno VARCHAR(20)
+                                    )""")
+                            cursor.execute("SELECT 1 FROM buyerinfo WHERE name=%s;",(name,))
+                            connection.commit()
+                            buyerexist=cursor.fetchone()
+                            
+                            if buyerexist:
+                                QMessageBox.information(None,"Error","You had already Updated Your Profile!")
+                            else:
+                                    cursor.execute("INSERT INTO buyerinfo(name,location,phoneno) VALUES(%s,%s,%s);",(name,location,phoneno))
+                                    QMessageBox.information(None,"Error","Profile Updated successfully!")
+                                    connection.commit()
+                            
+                            
+                            cursor.close()
+                            connection.close()
+                            
+                    except psycopg2.Error as e:
+                        QMessageBox.information(None,"Error",f"Error  Occured: {e}")
+
+    #updatepaymentTableWidget
+    def updatepaymentTableWidget(self):
+            try:
+                        connection = Ui_MainWindow.connectagrimeshDB(self)
+                        cursor = connection.cursor()
+                        cursor.execute(" SELECT productname,quantity,price  FROM vieworders")
+                        results=cursor.fetchall()
+                        total_price=0
+                        for rowID,rowData in enumerate(results):
+                                self.cart_table_Widget_2.insertRow(rowID)
+                                for colID,colData in enumerate(rowData):
+                                        self.cart_table_Widget_2.setItem(rowID,colID,QTableWidgetItem(str(colData)))
+                        
+                                total_price +=  int(rowData[2])  
+                                total_row = self.cart_table_Widget_2.rowCount()
+                                self.cart_table_Widget_2.insertRow(total_row)
+                                self.cart_table_Widget_2.setItem(total_row, 0, QTableWidgetItem("Total Spent"))
+                                self.cart_table_Widget_2.setItem(total_row, 2, QTableWidgetItem(str(total_price)))
+                                self.totalmoneyspentLabel_paymentpagelabel.setText("Total Money Spent:  "+str(total_price))
+ 
+
+                        connection.commit()
+                        cursor.close()
+                        connection.close()
+
+            except psycopg2.Error as e:
+                   QMessageBox.warning(None, "Error", f"An error occurred: {e}")
+
+    #cancelorderbuttonClicked
+    def cancelorderbuttonClicked(self,row):
+        self.canceledoRders+=1
+        details = []
+        
+        for col in range(3):  # Ensure correct column range
+            item = self.browseproductsTableWidget_2.item(row, col)
+            details.append(item.text() if item else "")
+        try:
+            connection = Ui_MainWindow.connectagrimeshDB(self)
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM vieworders WHERE productname=%s AND quantity=%s;", (details[0], details[1]))
+
+            connection.commit()
+            QMessageBox.information(None, "Success", "Order Cancelled successsfully Successfully!")
+            
+            self.updatebrowseproductsTableWidget2()
+            self.updatecart_TableWidget()
+
+            cursor.close()
+            connection.close()
+
+        except psycopg2.Error as e:
+            QMessageBox.warning(None, "Error", f"An error occurred: {e}")
+
+
+       #updatebrowseproductsTableWidget2
+    def updatebrowseproductsTableWidget2(self):
+            try:
+                connection=Ui_MainWindow.connectagrimeshDB(self)
+                cursor=connection.cursor()
+                cursor.execute("SELECT productname,quantity,price FROM vieworders")
+                results=cursor.fetchall()
+                
+                self.browseproductsTableWidget_2.setRowCount(0)
+                
+                for rowID,rowData in enumerate(results):
+                        self.browseproductsTableWidget_2.insertRow(rowID)
+                        self.totalorders+=1
+                        for colID,colData in enumerate(rowData):
+                                self.browseproductsTableWidget_2.setItem(rowID,colID,QTableWidgetItem(str(colData)))
+                                button=QPushButton("Cancel Order")
+                                self.browseproductsTableWidget_2.setCellWidget(rowID,3,button)
+                                button.clicked.connect(lambda _, r=rowID: self.cancelorderbuttonClicked(r))
+                
+                cursor.close()
+                connection.close()
+                
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"Error {e}")
+
+    #searchproductLinedittextchabged
+    def searchproductLinedittextchabged(self,text):
+        
+        for row in range(self.browseproductsTableWidget.rowCount()):
+            match = False
+            for column in range(self.browseproductsTableWidget.columnCount()):
+                item = self.browseproductsTableWidget.item(row, column)
+                if item and text.lower() in item.text().lower():
+                    match = True
+                    break
+            self.browseproductsTableWidget.setRowHidden(row, not match)
+            
+            
+    #updatecart_TableWidget
+    def updatecart_TableWidget(self):
+        try:
+            totalitem=0
+            connection = Ui_MainWindow.connectagrimeshDB(self)
+            cursor = connection.cursor()
+            cursor.execute("SELECT productname, quantity, price FROM cart")
+            results = cursor.fetchall()
+
+            self.cart_table_Widget.setRowCount(0)
+
+            if results:
+                for rowID, rowData in enumerate(results):
+                    self.cart_table_Widget.insertRow(rowID)
+                    totalitem+=1
+                    self.totalitemInCart+=1
+                    for colID, colData in enumerate(rowData):
+                        self.cart_table_Widget.setItem(rowID, colID, QTableWidgetItem(str(colData)))
+                        
+
+                    # Check Out Button
+                    btn_edit = QPushButton("Check Out")
+                    btn_edit.clicked.connect(partial(self.checkOut, rowID))
+                    self.cart_table_Widget.setCellWidget(rowID, 3, btn_edit)
+
+                    # Remove Product Button
+                    removebtn = QPushButton("Remove Product")
+                    removebtn.clicked.connect(partial(self.removeFromCart, rowID))
+                    self.cart_table_Widget.setCellWidget(rowID, 4, removebtn)
+           
+            else:
+                pass
+
+            connection.commit()
+            totalitem  =str(totalitem)     
+            self.productsinCartLabel.setText(f"Products In Cart: {totalitem}")
+            self.productsinCartLabel.setStyleSheet("font-size: 20px;")
+            cursor.close()
+            connection.close()
+
+        except psycopg2.Error as e:
+            QMessageBox.warning(None, "Error", f"An error occurred: {e}")
+
+    # Remove From Cart
+    def removeFromCart(self, row):
+        try:
+            # Ensure row is valid
+            if row >= self.cart_table_Widget.rowCount():
+                QMessageBox.warning(None, "Error", "Invalid row selected!")
+                return
+
+            
+            details = []
+            for col in range(3):
+                item = self.cart_table_Widget.item(row, col)
+                details.append(item.text() if item else "")
+
+            connection = Ui_MainWindow.connectagrimeshDB(self)
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM cart WHERE productname=%s AND quantity=%s;", (details[0], details[1]))
+
+            connection.commit()
+            QMessageBox.information(None, "Success", "Product Removed Successfully!")
+            self.updatecart_TableWidget()
+
+            cursor.close()
+            connection.close()
+
+        except psycopg2.Error as e:
+            QMessageBox.warning(None, "Error", f"An error occurred: {e}")
+
+    # Checkout Function
+    def checkOut(self, row):
+        try:
+            if row >= self.cart_table_Widget.rowCount():
+                QMessageBox.warning(None, "Error", "Invalid row selected!")
+                return
+
+            details = []
+            for col in range(3):  
+                item = self.cart_table_Widget.item(row, col)
+                details.append(item.text() if item else "")
+
+            connection = Ui_MainWindow.connectagrimeshDB(self)
+            cursor = connection.cursor()
+
+            from checkoutGui import Ui_checkOutDialog
+            self.checkoutdialog = QtWidgets.QMainWindow()
+            self.ui = Ui_checkOutDialog()
+            self.ui.setupUi(self.checkoutdialog)
+            self.checkoutdialog.setFixedSize(438, 591)
+            self.checkoutdialog.show()
+            self.ui.productnamelineEdit.setText(details[0])
+            self.ui.quantitylineeidtlineEdit.setText(details[1])
+            self.ui.pricelineEdit.setText(details[2])
+            cursor.execute("""
+    SELECT cart.productname, cart.quantity, cart.price, produce.imagepath 
+    FROM cart 
+    JOIN produce ON cart.productname = produce.productname
+""")
+            results = cursor.fetchall()
+            
+            
+            for rowID, rowData in enumerate(results):
+                        product_name, quantity, price, image_path = rowData
+                        from PyQt6.QtGui import QPixmap
+                        pixmap = QPixmap(image_path)
+                        self.ui.imageOfProducelabel_checkoutdialog.setPixmap(pixmap)
+                        self.ui.imageOfProducelabel_checkoutdialog.setScaledContents(True)
+             
+                        self.ui.checkoutpushButton.clicked.connect(lambda: self.ui.checkoutbuttonclicked(details))
+                     
+                        
+            self.ui.productnamelineEdit.setReadOnly(True)
+            self.ui.quantitylineeidtlineEdit.setReadOnly(True)
+            self.ui.pricelineEdit.setReadOnly(True)
+
+            cursor.close()
+            connection.close()
+
+        except psycopg2.Error as e:
+            QMessageBox.warning(None, "Error", f"An error occurred: {e}")
+
+    # Update Browse Products Table
+    def updatebrowseproductsTableWidget(self):
+        try:
+            connection = Ui_MainWindow.connectagrimeshDB(self)
+            cursor = connection.cursor()
+            cursor.execute("SELECT productname, category, quantity, price, location FROM produce")
+            results = cursor.fetchall()
+
+            self.browseproductsTableWidget.setRowCount(0)
+
+            for rowID, rowData in enumerate(results):
+                self.browseproductsTableWidget.insertRow(rowID)
+                for columnID, columnData in enumerate(rowData):
+                    self.browseproductsTableWidget.setItem(rowID, columnID, QTableWidgetItem(str(columnData)))
+
+                # Add To Cart Button
+                btn_add = QPushButton("Add To Cart")
+                btn_add.clicked.connect(partial(self.addToCart, rowID))
+                self.browseproductsTableWidget.setCellWidget(rowID, 5, btn_add)
+            self.searchproductLinedittextchabged(self.searchproductLinedit.text())
+            cursor.close()
+            connection.close()
+
+        except psycopg2.Error as e:
+            QMessageBox.warning(None, "Error", f"Error Occurred: {e}")
+    def addToCart(self,row):
+        #creating ordercart table
+        from farmersDashboard import Ui_MainWindow
+        details = [self.browseproductsTableWidget.item(row, col).text() for col in range(5)]
+        connection=Ui_MainWindow.connectagrimeshDB(self)
+        cursor=connection.cursor()
+        cursor.execute("""
+                       CREATE TABLE IF NOT EXISTS cart(
+                               productname VARCHAR(200) PRIMARY KEY,
+                               quantity VARCHAR(200),
+                               price INTEGER
+                               
+                       )
+                       """)
+       
+        productname=details[0]
+        quantity=details[2]
+        price=int(details[3])
+        cursor.execute("""
+                       INSERT INTO cart(productname,quantity,price)
+                       VALUES(%s,%s,%s) ON CONFLICT(productname) DO NOTHING
+                       """,(productname,quantity,price))
+        connection.commit()
+        QMessageBox.information(None,"Success","Product Added To Cart Successfully!")
+        cursor.close()
+        connection.close()
+        
+        
     
     #logoutbuttonclicked
     def logoutbuttonclicked(self):

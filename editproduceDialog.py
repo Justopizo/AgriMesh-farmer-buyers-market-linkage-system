@@ -82,14 +82,6 @@ class Ui_editproduceDialog(object):
             connection.commit()
             QMessageBox.information(None,"Success","Produce Edited And Saved Successfully!")
             
-            from plyer import notification
-            notification.notify(
-                title="Saved successfully!",
-                message=f"Produce: '{self.productnamelineEdit_editproduce.text()} Was Edited And Saved Successfully!'",
-                app_name="Farmers-Buyers-Market-linkaage System",
-                timeout=70
-                
-            )
             QtWidgets.QApplication.instance().activeWindow().close()
             cursor.close()
             connection.close()

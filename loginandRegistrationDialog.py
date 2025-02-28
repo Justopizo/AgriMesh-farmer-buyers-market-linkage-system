@@ -205,8 +205,6 @@ class Ui_loginOrregistrationDialog(object):
                     QtWidgets.QApplication.instance().activeWindow().close()
                     
                 elif role=="Buyer":
-                    QMessageBox.information(None,"Success","Registration Successful!")
-                    
                     from buyerDashboard import Ui_buyerDashboardDialog
                     self.buyerdash = QtWidgets.QMainWindow()
                     self.ui = Ui_buyerDashboardDialog()

@@ -22,6 +22,8 @@ class MpesaAccessToken:
 
 
 class LipanaMpesaPpassword:
+    phoneno=254793031269
+    amount=1
     lipa_time = datetime.now().strftime('%Y%m%d%H%M%S')
     Business_short_code = "174379"
     OffSetValue = '0'
@@ -37,10 +39,10 @@ request = {
     "Password": LipanaMpesaPpassword.decode_password,
     "Timestamp": LipanaMpesaPpassword.lipa_time,
     "TransactionType": "CustomerPayBillOnline",
-    "Amount": 100,
+    "Amount": LipanaMpesaPpassword.amount,
     "PartyA": 254793031269,
     "PartyB": LipanaMpesaPpassword.Business_short_code,
-    "PhoneNumber": 254797747846,
+    "PhoneNumber": LipanaMpesaPpassword.phoneno,
     "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
     "AccountReference": "Justo Pizo",
     "TransactionDesc": "Testing stk push"
