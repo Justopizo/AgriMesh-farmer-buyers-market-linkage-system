@@ -50,7 +50,7 @@ The **Farmers' and Buyers' Market Linkage System** is a desktop application desi
 ## Installation and Setup
 ### **Prerequisites**
 Ensure you have the following installed on your system:
-- Python 3+
+- Python 3.13+
 - PostgreSQL
 - Required dependencies (listed in `requirements.txt`)
 
@@ -64,11 +64,8 @@ Ensure you have the following installed on your system:
    ```bash
    pip install -r requirements.txt
    ```
-3. Set up the database:
-   ```bash
-   python setup_db.py
-   ```
-4. Run the application:
+
+3. Run the application:
    ```bash
    python main.py
    ```
@@ -91,6 +88,6 @@ This project is licensed under the **MIT License**.
 
 ## Contact
 For inquiries or support, contact:
-- **Email:** your-email@example.com
+- **Email:** justopizo01@gmail.com
 - **GitHub:** [Your GitHub Profile](https://github.com/your-username)
 
