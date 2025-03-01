@@ -57,8 +57,7 @@ Ensure you have the following installed on your system:
 ### **Installation Steps**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/Justopizo/AgriMesh-farmer-buyers-market-linkage-system
    ```
 2. Install dependencies:
    ```bash
@@ -89,5 +88,5 @@ This project is licensed under the **MIT License**.
 ## Contact
 For inquiries or support, contact:
 - **Email:** justopizo01@gmail.com
-- **GitHub:** [Your GitHub Profile](https://github.com/your-username)
+- **GitHub:** https://github.com/Justopizo
 
