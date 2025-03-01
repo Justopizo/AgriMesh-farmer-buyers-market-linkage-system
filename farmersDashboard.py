@@ -131,6 +131,10 @@ class Ui_MainWindow(object):
         self.timer.timeout.connect(self.updateviewProduceTableWidget)
         self.timer.timeout.connect(self.updateeditproduceTablewidget)
         self.timer.timeout.connect(self.updateviewProducepageTableWidget)
+        self.timer.timeout.connect(self.updatesalestableWidget_sales)
+        self.timer.timeout.connect(self.salesbycategoryGraphicsviewepdate)
+        self.timer.timeout.connect(self.salesbyProductnamegraphicsviewupdate)
+        
         self.timer.start(1000) 
         
         
@@ -523,8 +527,8 @@ class Ui_MainWindow(object):
         self.profilecommandLinkButton.setText(_translate("MainWindow", "profile"))
         self.viewOrderscommandLinkButton.setText(_translate("MainWindow", "View Ordes"))
         self.groupBox_5.setTitle(_translate("MainWindow", "Table and Charts"))
-        self.label_29.setText(_translate("MainWindow", "sales By Category"))
-        self.label_30.setText(_translate("MainWindow", "Sales By product"))
+        self.label_29.setText(_translate("MainWindow", "sales,orders and available produce"))
+        self.label_30.setText(_translate("MainWindow", "Sales By Category"))
         self.label.setText(_translate("MainWindow", "Product Name"))
         self.label_2.setText(_translate("MainWindow", "Product Category"))
         self.productcategorycomboBox.setItemText(0, _translate("MainWindow", "Fruits"))
@@ -632,9 +636,153 @@ class Ui_MainWindow(object):
         self.switchtodarkmodeCommandlinkbutton.setText(_translate("MainWindow", "Switch to darkmode"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Notifications"))
         
+        self.saveandExportreportpushButton_sales.clicked.connect(self.saveandExportreportpushButton_salesClicked)
         self.tabWidget.currentChanged.connect(self.setavalabilitytabclicked)
         self.updateeditproduceTablewidget() 
         self.updateviewProducepageTableWidget()
+        self.updatesalestableWidget_sales()
+        self.salesbycategoryGraphicsviewepdate()
+        self.salesbyProductnamegraphicsviewupdate()
+        self.updatenotificationstextEdit_settingspage()
+        self.pendingorder=0
+        self.totalsales=0
+        self.availableproduce=0
+        
+        
+        
+        
+        
+    #updatenotificationstextEdit_settingspage
+    def updatenotificationstextEdit_settingspage(self):
+            try:
+                    connection=self.connectagrimeshDB()
+                    cursor=connection.cursor()
+                    
+                    cursor.execute("SELECT notification FROM notifications")
+                    notifications = cursor.fetchall()  
+
+                    cursor.close()
+                    connection.close()
+
+        
+                    if notifications:
+                        self.notificationstextEdit_settingspage.clear()
+                        self.notificationstextEdit_settingspage.setReadOnly(True)
+                        formatted_notifications = "\n".join([row[0] for row in notifications])
+                        self.notificationstextEdit_settingspage.setText(formatted_notifications)
+                        
+                    else:
+                        self.notificationstextEdit_settingspage.setText("No notifications available.")
+                
+                    
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"Error Occurred {e}")    
+        
+     #salesbyProductnamegraphicsview
+    def salesbyProductnamegraphicsviewupdate(self):
+            from produceBycategory import ProduceChartHelper
+            chart_helper = ProduceChartHelper(self.salesbyProductnamegraphicsview)  
+            chart_helper.load_chart()   
+            
+            
+     #self.salesbycategoryGraphicsview
+    def salesbycategoryGraphicsviewepdate(self):
+        from sale_orders_andAvailableproduce import ProduceChartHelper
+        chart = ProduceChartHelper(self.salesbycategoryGraphicsview)  
+        chart.load_pie_chart(self.totalsales, self.pendingorder, self.availableproduce)
+        
+     #saveandExportreportpushButton_salesClicked
+    def saveandExportreportpushButton_salesClicked(self):
+        option=self.salesreportcomboBox_sales.currentText()
+        
+        if option=="PDF":
+                from reportlab.lib.pagesizes import A4
+                from reportlab.pdfgen import canvas
+                
+                connection=self.connectagrimeshDB()
+                query = ("SELECT productname, buyername, price FROM vieworders")
+                cursor=connection.cursor()
+                cursor.execute(query)
+                records = cursor.fetchall()
+                file_name = "sale_Report.pdf"
+                c = canvas.Canvas(file_name, pagesize=A4)
+                width, height = A4
+                c.setFont("Helvetica-Bold", 14)
+                c.drawString(200, height - 50, "Sales Data Report")
+                c.setFont("Helvetica-Bold", 12)
+                headers = ["Product Name", "Buyer Name", "Price"]
+                x_positions = [50, 150, 300, 400, 500]  
+                y_position = height - 80
+                for i, header in enumerate(headers):
+                   c.drawString(x_positions[i], y_position, header)
+                   
+                c.line(50, y_position - 3, 550, y_position - 3) 
+                c.setFont("Helvetica", 10)
+                y_position -= 20
+                for row_data in records:
+                        if y_position < 50:  
+                                c.showPage()
+                                y_position = height - 50
+                                c.setFont("Helvetica", 10)
+
+                        for col_idx, cell_data in enumerate(row_data):
+                                c.drawString(x_positions[col_idx], y_position, str(cell_data))
+
+                        y_position -= 20  
+
+                c.save()
+                import os
+
+                file_name = "sale_Report.pdf"
+                file_path = os.path.abspath(file_name)
+                QMessageBox.information(None,"Saved",f"PDF saved Successfully As {file_name} to \n\nLocation : {file_path}")
+                
+                connection.close()
+                cursor.close()
+        elif option=="Docx":
+                file_name = "sale_Report.docx"
+                from saveProduceasdocx import save_to_docx
+                savedpath=save_to_docx(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savedpath}")
+        else:
+                file_name = "sale_Report.csv"
+                from saveProduceasCsv import save_to_csv
+                savecsvpath=save_to_csv(file_name)
+                QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savecsvpath}")
+        
+                   
+     
+     
+    #updatesalestableWidget_sales
+    def updatesalestableWidget_sales(self):
+            try:
+                    totalsales=0
+                    connection=self.connectagrimeshDB()
+                    cursor=connection.cursor()
+                    
+                    cursor.execute("""
+                                   SELECT productname,buyername,price FROM vieworders
+                                   """)
+                    results=cursor.fetchall()
+                    if results:
+                        self.salestableWidget_sales.setRowCount(0)
+                        
+                        for rowId,rowData in enumerate(results):
+                                self.salestableWidget_sales.insertRow(rowId)
+                                totalsales+=1
+                                for colId,ColData in enumerate(rowData):
+                                        self.salestableWidget_sales.setItem(rowId,colId,QTableWidgetItem(str(ColData)))
+                                        label=QLabel("Completed")
+                                        self.salestableWidget_sales.setCellWidget(rowId, 3, label)
+                                
+                   
+                    self.totalsaleslcdNumber.display(totalsales)
+                    self.totalsales=totalsales
+                    cursor.close()
+                    connection.close()
+                    
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"Error  Occured {e}")
         
     #filterorderstable
     def filterorderstable(self):
@@ -656,6 +804,7 @@ class Ui_MainWindow(object):
     def updateviewProducepageTableWidget(self):
             from functools import partial
             try:
+                    availableOrders=0
                     connection=self.connectagrimeshDB()
                     cursor=connection.cursor()
                     cursor.execute("""
@@ -677,6 +826,7 @@ class Ui_MainWindow(object):
                     self.vieworderstableWidget.setRowCount(0)
                     for rowID,rowData in enumerate(results):
                             self.vieworderstableWidget.insertRow(rowID)
+                            availableOrders+=1
                             for colID,colData in enumerate(rowData):
                                     self.vieworderstableWidget.setItem(rowID,colID,QTableWidgetItem(str(colData)))
                             btn_add = QPushButton("Cancel Order")
@@ -690,7 +840,8 @@ class Ui_MainWindow(object):
 
 
                             
-                           
+                    self.pendingordersLCDnumber.display(availableOrders) 
+                    self.pendingorder=availableOrders
                     self.vieworderstableWidget.resizeColumnsToContents()        
                     cursor.close()
                     connection.close()
@@ -699,15 +850,12 @@ class Ui_MainWindow(object):
                 
        #cancelOrder
     def cancelOrder(self,row):
-        # buyername,phoneno,productname,quantity,price,paymentmethod=row
+        
          try:
                 connection=self.connectagrimeshDB()
                 cursor=connection.cursor()
                 cursor.execute("UPDATE vieworders SET status = 'Cancelled' WHERE buyername = %s AND phoneno = %s;",(str(row[0]),str(row[1])))
-                cursor.execute("""
-                                   DELETE FROM  vieworders WHERE buyername=%s and phoneno=%s; 
-                                   
-                                   """,(str(row[0]),str(row[1])))
+               
                 connection.commit()
                 QMessageBox.information(None,"Cancel Order","Order Cancelled Successsfully!")
                 cursor.close()
@@ -832,15 +980,7 @@ class Ui_MainWindow(object):
                 file_name = "produce_report.pdf"
                 file_path = os.path.abspath(file_name)
                 QMessageBox.information(None,"Saved",f"Image saved Successfully As {file_name} to \n\nLocation : {file_path}")
-                from plyer import notification
-                notification.notify(
-                                title="Success",
-                                message=f"{file_name} Saved successfully!",
-                                app_name="JustoSoftwares",
-                                timeout=600
-                                
-                        )
-
+                
                 connection.close()
                 cursor.close()
         elif choice=="Docx Format":
@@ -848,53 +988,25 @@ class Ui_MainWindow(object):
                 from saveProduceasdocx import save_to_docx
                 savedpath=save_to_docx(file_name)
                 QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savedpath}")
-                from plyer import notification
-                notification.notify(
-                                title="Success",
-                                message=f"{file_name} Saved successfully!",
-                                app_name="JustoSoftwares",
-                                timeout=600
-                                
-                        )
+                
         elif choice=="Json":
                 file_name = "produce_report.json"
                 from saveProduceasJson import save_to_json
                 savedjsonpath=save_to_json(file_name)
                 QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savedjsonpath}")
-                from plyer import notification
-                notification.notify(
-                                title="Success",
-                                message=f"{file_name} Saved successfully!",
-                                app_name="JustoSoftwares",
-                                timeout=600
-                                
-                        )
+                
         elif choice=="CSV":
                 file_name = "produce_report.csv"
                 from saveProduceasCsv import save_to_csv
                 savecsvpath=save_to_csv(file_name)
                 QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {savecsvpath}")
-                from plyer import notification
-                notification.notify(
-                                title="Success",
-                                message=f"{file_name} Saved successfully!",
-                                app_name="JustoSoftwares",
-                                timeout=600
-                                
-                        )
+               
         else:
                 file_name = "produce_report.png"
                 from saveasScreenshot import save_as_screenshot
                 screenshhot=save_as_screenshot(file_name)
                 QMessageBox.information(None,"Saved",f"Saved File As {file_name} to \n\nLcation: {screenshhot}")
-                from plyer import notification
-                notification.notify(
-                                title="Success",
-                                message=f"{file_name} Saved successfully!",
-                                app_name="JustoSoftwares",
-                                timeout=600
-                                
-                        )
+                
                 
 
              
@@ -1080,25 +1192,30 @@ class Ui_MainWindow(object):
 
     #updateviewProduceTableWidget
     def updateviewProduceTableWidget(self):
+                availableproduce=0
                 connection = self.connectagrimeshDB()
                 cursor = connection.cursor()
 
-                # Fetch data
+                
                 query = "SELECT productname, category, quantity, price, location FROM produce"
                 cursor.execute(query)
                 records = cursor.fetchall()
 
-                # Close connection
+                
                 cursor.close()
                 connection.close()
 
-                # Clear existing rows only 
+                
                 self.viewProducetableWidget.setRowCount(0)
 
                 for row_idx, row_data in enumerate(records):
                         self.viewProducetableWidget.insertRow(row_idx)  
+                        availableproduce+=1
                         for col_idx, cell_data in enumerate(row_data):
                                 self.viewProducetableWidget.setItem(row_idx, col_idx, QTableWidgetItem(str(cell_data)))
+                
+                self.availableproduceLCDnumber.display(availableproduce)
+                self.availableproduce=availableproduce
                                 
                                 
      #updateeditproduceTablewidget

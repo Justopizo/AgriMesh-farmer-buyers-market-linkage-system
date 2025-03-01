@@ -15,7 +15,7 @@ def save_to_docx(file_name):
         cursor = conn.cursor()
 
         # Fetch data
-        query = "SELECT productname, category, quantity, price, location FROM produce"
+        query = "SELECT productname, buyername, price FROM vieworders"
         cursor.execute(query)
         records = cursor.fetchall()
         
@@ -25,13 +25,13 @@ def save_to_docx(file_name):
 
         # Create a Word document
         doc = Document()
-        doc.add_heading('Produce Data Report', level=1)
+        doc.add_heading('Sales Data Report', level=1)
 
         # Add table
-        table = doc.add_table(rows=1, cols=5)
+        table = doc.add_table(rows=1, cols=3)
         table.style = 'Table Grid'
         hdr_cells = table.rows[0].cells
-        headers = ["Product Name", "Category", "Quantity", "Price", "Location"]
+        headers = ["Product Name", "Buyer Name", "Price"]
 
         for i, header in enumerate(headers):
             hdr_cells[i].text = header

@@ -115,6 +115,9 @@ class Ui_checkOutDialog(object):
                                VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT(productname) DO NOTHING;
                                """,(buyername,phoneno,productname,quantity,price,paymentmethod))
                 
+                cursor.execute("CREATE TABLE IF NOT EXISTS notifications(notification VARCHAR(1000))")
+                notification=f"A Buyer Called: {buyername} Has Ordered {productname}"
+                cursor.execute("INSERT INTO notifications(notification) VALUES(%s);",(notification,))
                 connection.commit()
                 if paymentmethod=="Payment On Delivery":
                     from payondeliverydialog import Ui_paymentonDeliveryDialog

@@ -14,17 +14,16 @@ def save_to_csv(file_name):
         cursor = conn.cursor()
 
         # Fetch data
-        query = ("SELECT productname, category, quantity, price, location FROM produce")
+        query = ("SELECT productname, buyername, price FROM vieworders")
         cursor.execute(query)
         records = cursor.fetchall()
         
-        # Close connection
         cursor.close()
         conn.close()
 
         # Save data to CSV
         file_path = os.path.abspath(file_name)
-        headers = ["productname", "category", "quantity", "price", "location"]
+        headers = ["Product Name", "Buyer Name", "Price"]
 
         with open(file_path, mode="w", newline="", encoding="utf-8") as csv_file:
             writer = csv.writer(csv_file)

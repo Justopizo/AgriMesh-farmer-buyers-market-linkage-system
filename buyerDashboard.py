@@ -372,6 +372,7 @@ class Ui_buyerDashboardDialog(object):
         self.timer.timeout.connect(self.updatebrowseproductsTableWidget2)
         self.timer.timeout.connect(self.scrollHelpAndSupportText)
         self.timer.timeout.connect(self.checkForCancelledOrders)
+        self.timer.timeout.connect(self.updatepaymentTableWidget)
         
         self.updateqlcdDisplays()
         
@@ -438,7 +439,8 @@ class Ui_buyerDashboardDialog(object):
         if cancelled_orders:
             for order in cancelled_orders:
                 buyername, productname = order
-                self.showNotification(f"Order for {productname} has been cancelled By The Farmer!.")
+                message=f"Order for {productname} has been cancelled By The Farmer!."
+                self.showNotification(message)
             
             cursor.execute("DELETE FROM vieworders WHERE status = 'Cancelled';")
             connection.commit()
@@ -449,7 +451,7 @@ class Ui_buyerDashboardDialog(object):
         print(f"Database Error: {e}")
 
     def showNotification(self, message):
-         QMessageBox.warning(self, "Order Cancelled", message)
+         QMessageBox.warning(None, "Order Cancelled",message)
 
 
            
