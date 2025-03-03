@@ -116,8 +116,7 @@ class Ui_checkOutDialog(object):
                                """,(buyername,phoneno,productname,quantity,price,paymentmethod))
                 
                 cursor.execute("CREATE TABLE IF NOT EXISTS notifications(notification VARCHAR(1000))")
-                notification=f"A Buyer Called: {buyername} Has Ordered {productname}"
-                cursor.execute("INSERT INTO notifications(notification) VALUES(%s);",(notification,))
+               
                 connection.commit()
                 if paymentmethod=="Payment On Delivery":
                     from payondeliverydialog import Ui_paymentonDeliveryDialog
@@ -127,6 +126,9 @@ class Ui_checkOutDialog(object):
                     self.ui.setupUi(self.deliverygui)
                     self.deliverygui.setFixedSize(466, 162)
                     self.deliverygui.show()
+                    notification=f"A Buyer Called: {buyername} Has Ordered {productname}"
+                    cursor.execute("INSERT INTO notifications(notification) VALUES(%s);",(notification,))
+                    connection.commit()
                     
                     
                     
@@ -137,10 +139,13 @@ class Ui_checkOutDialog(object):
                     self.ui.setupUi(self.beforedelivery)
                     self.beforedelivery.setFixedSize(495, 146)
                     self.beforedelivery.show()
+                    notification=f"A Buyer Called: {buyername} Has Ordered {productname}"
+                    cursor.execute("INSERT INTO notifications(notification) VALUES(%s);",(notification,))
+                    connection.commit()
                     
                     
                 else:
-                    QMessageBox.information(None,"Success","this is a parcel")
+                    QMessageBox.information(None,"Success","This Method is Under Mantainance\nCome back later")
                 
                 
                 cursor.close()

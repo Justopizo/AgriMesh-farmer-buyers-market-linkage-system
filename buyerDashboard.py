@@ -372,7 +372,7 @@ class Ui_buyerDashboardDialog(object):
         self.timer.timeout.connect(self.updatebrowseproductsTableWidget2)
         self.timer.timeout.connect(self.scrollHelpAndSupportText)
         self.timer.timeout.connect(self.checkForCancelledOrders)
-        self.timer.timeout.connect(self.updatepaymentTableWidget)
+        #self.timer.timeout.connect(self.updatepaymentTableWidget)
         
         self.updateqlcdDisplays()
         
@@ -396,16 +396,17 @@ class Ui_buyerDashboardDialog(object):
     <p>Email: justopizo01@gmail.com</p>
     <h3>Credits</h3>
     <p>Senior Developer and Designer: Justin Omare</p>
-    <p>Junior Developers:</p>
-    <p>Godwin Kimutai - Database Structuring</p>
-    <p>Solomon Nyongesa - Assistant Database Administrator</p>
-    <p>Gloria Mongasi - GUI Designer</p>
-    <p>Elton Manyasa - Ideas Generator</p>
-    <p>Jerry Scotch - Project Documentation and System Design Supervisor</p>
+    <p>Team Members:</p>
+    <p>Manyasa Elton - QA Tester & Documentation</p>
+    <p>Jerry Scotch - Frontend Developer</p>
+    <p>Gloria Mongasi - Backend Developer</p>
+    <p>Solomon Nyongesa - Database Administrator</p>
+    <p>Godwin Kimutai - Python Developer</p>
     <p><em>Motto: Software that has no limits</em></p>
 </body>
 </html>
 """
+
 
 
 
@@ -544,15 +545,15 @@ class Ui_buyerDashboardDialog(object):
                                 for colID,colData in enumerate(rowData):
                                         self.cart_table_Widget_2.setItem(rowID,colID,QTableWidgetItem(str(colData)))
                         
-                                total_price +=  int(rowData[2])  
-                                total_row = self.cart_table_Widget_2.rowCount()
-                                self.cart_table_Widget_2.insertRow(total_row)
-                                self.cart_table_Widget_2.setItem(total_row, 0, QTableWidgetItem("Total Spent"))
-                                self.cart_table_Widget_2.setItem(total_row, 2, QTableWidgetItem(str(total_price)))
-                                self.totalmoneyspentLabel_paymentpagelabel.setText("Total Money Spent:  "+str(total_price))
+                                        total_price +=  int(rowData[2])  
+                                        total_row = self.cart_table_Widget_2.rowCount()
+                                        self.cart_table_Widget_2.insertRow(total_row)
+                                        self.cart_table_Widget_2.setItem(total_row, 0, QTableWidgetItem("Total Spent"))
+                                        self.cart_table_Widget_2.setItem(total_row, 2, QTableWidgetItem(str(total_price)))
+                                        self.totalmoneyspentLabel_paymentpagelabel.setText("Total Money Spent:  "+str(total_price))
  
 
-                        connection.commit()
+                
                         cursor.close()
                         connection.close()
 
@@ -564,7 +565,7 @@ class Ui_buyerDashboardDialog(object):
         self.canceledoRders+=1
         details = []
         
-        for col in range(3):  # Ensure correct column range
+        for col in range(3):  
             item = self.browseproductsTableWidget_2.item(row, col)
             details.append(item.text() if item else "")
         try:
@@ -771,8 +772,9 @@ class Ui_buyerDashboardDialog(object):
 
         except psycopg2.Error as e:
             QMessageBox.warning(None, "Error", f"Error Occurred: {e}")
+            
     def addToCart(self,row):
-        #creating ordercart table
+        
         from farmersDashboard import Ui_MainWindow
         details = [self.browseproductsTableWidget.item(row, col).text() for col in range(5)]
         connection=Ui_MainWindow.connectagrimeshDB(self)

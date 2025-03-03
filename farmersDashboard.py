@@ -135,7 +135,7 @@ class Ui_MainWindow(object):
         self.timer.timeout.connect(self.salesbycategoryGraphicsviewepdate)
         self.timer.timeout.connect(self.salesbyProductnamegraphicsviewupdate)
         
-        self.timer.start(1000) 
+        self.timer.start(500) 
         
         
         self.groupBox_5 = QtWidgets.QGroupBox(parent=self.dashboardPagewidget)
