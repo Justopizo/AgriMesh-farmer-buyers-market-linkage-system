@@ -115,7 +115,7 @@ class Ui_loginOrregistrationDialog(object):
                         if password==storedPassword and  role==storedrole :
                             pass
                         else:
-                            QMessageBox.warning(None,"ERROR","Wrong Password Or role mismatch!")
+                            QMessageBox.warning(None,"User Already Exists","User Already Exists\nWrong Password Or role mismatch!")
                             return
                 
                 if useralreadyExists:
@@ -145,6 +145,14 @@ class Ui_loginOrregistrationDialog(object):
                         
                     else:
                         QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Master Admin!")
+                        from adminDashboard import Ui_admnidashboardDialog
+                        self.admindash = QtWidgets.QMainWindow()
+                        self.ui = Ui_admnidashboardDialog()
+                        self.ui.setupUi(self.admindash)
+                        self.admindash.setFixedSize(954, 713)
+                        self.admindash.show()
+                        QtWidgets.QApplication.instance().activeWindow().close()
+                       
                 else:
                     QMessageBox.information(None,"Error","User Doesn't Exist!\nPlease Register")
                 connection.close()
@@ -183,7 +191,7 @@ class Ui_loginOrregistrationDialog(object):
             useralreadyExists=cursor.fetchone()
             
             if useralreadyExists:
-                QMessageBox.warning(None,"Error","User Already Exists.Please Login!")
+                QMessageBox.warning(None,"User Exists","User Already Exists.Please Login!")
                 self.passswordlinedit.clear()
             else:
                 cursor.execute("""
@@ -214,7 +222,13 @@ class Ui_loginOrregistrationDialog(object):
                     QtWidgets.QApplication.instance().activeWindow().close()
                     
                 else:
-                    QMessageBox.information(None,"Success","Registration Successful!\nWelcome Admin")
+                    from adminDashboard import Ui_admnidashboardDialog
+                    self.admindash = QtWidgets.QMainWindow()
+                    self.ui = Ui_admnidashboardDialog()
+                    self.ui.setupUi(self.admindash)
+                    self.admindash.setFixedSize(954, 713)
+                    self.admindash.show()
+                    QtWidgets.QApplication.instance().activeWindow().close()
                                         
     
 
@@ -235,7 +249,7 @@ class Ui_loginOrregistrationDialog(object):
         self.registerPushButton.setText(_translate("loginOrregistrationDialog", "Register"))
         self.forgotpassword.setText(_translate("loginOrregistrationDialog", "<a href=\"#\">Forgot Password?</a>"))
 
-
+"""
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -244,3 +258,4 @@ if __name__ == "__main__":
     ui.setupUi(loginOrregistrationDialog)
     loginOrregistrationDialog.show()
     sys.exit(app.exec())
+"""

@@ -644,13 +644,32 @@ class Ui_MainWindow(object):
         self.salesbycategoryGraphicsviewepdate()
         self.salesbyProductnamegraphicsviewupdate()
         self.updatenotificationstextEdit_settingspage()
+        self.checkordercancelledbyadmin()
         self.pendingorder=0
         self.totalsales=0
         self.availableproduce=0
         
         
         
-        
+    #checkordercancelledbyadmin
+    def checkordercancelledbyadmin(self):
+            try:
+                    connnection=self.connectagrimeshDB()
+                    cursor=connnection.cursor()
+                    cursor.execute("SELECT * FROM produce WHERE status='Cancelled'")
+                    results=cursor.fetchall()
+                    if results:
+                        count=len(results)
+                        QMessageBox.information(None,"SO sad",f"{count} Product(s) Were Cancelled By admin!")
+                        cursor.execute("DELETE FROM produce WHERE status='Cancelled'")
+                        connnection.commit()
+                            
+                    
+                    
+                    cursor.close()
+                    connnection.close() 
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"An Error Occurred {e}")   
         
     #updatenotificationstextEdit_settingspage
     def updatenotificationstextEdit_settingspage(self):
