@@ -502,6 +502,7 @@ class Ui_MainWindow(object):
         
         #connectdb
         self.connectagrimeshDB()
+        self.totalsales=0
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(3)
@@ -533,9 +534,10 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Product Category"))
         self.productcategorycomboBox.setItemText(0, _translate("MainWindow", "Fruits"))
         self.productcategorycomboBox.setItemText(1, _translate("MainWindow", "Vegetables"))
-        self.productcategorycomboBox.setItemText(2, _translate("MainWindow", "Dairy"))
+        self.productcategorycomboBox.setItemText(2, _translate("MainWindow", "Others"))
         self.productcategorycomboBox.setItemText(3, _translate("MainWindow", "Cereals"))
-        self.productcategorycomboBox.setItemText(4, _translate("MainWindow", "Others"))
+        self.productcategorycomboBox.setItemText(4, _translate("MainWindow", "Animals"))
+        self.productcategorycomboBox.setItemText(5, _translate("MainWindow", "Others"))
         self.label_3.setText(_translate("MainWindow", "Quantity"))
         self.quantitylinedit.setPlaceholderText(_translate("MainWindow", "e.g 2kg,1L or 2"))
         self.label_4.setText(_translate("MainWindow", "Price"))
@@ -646,8 +648,9 @@ class Ui_MainWindow(object):
         self.updatenotificationstextEdit_settingspage()
         self.checkordercancelledbyadmin()
         self.pendingorder=0
-        self.totalsales=0
+        
         self.availableproduce=0
+        
         
         
         
@@ -794,9 +797,9 @@ class Ui_MainWindow(object):
                                         label=QLabel("Completed")
                                         self.salestableWidget_sales.setCellWidget(rowId, 3, label)
                                 
-                   
+                    self.salestableWidget_sales.resizeColumnsToContents()
                     self.totalsaleslcdNumber.display(totalsales)
-                    self.totalsales=totalsales
+                    
                     cursor.close()
                     connection.close()
                     

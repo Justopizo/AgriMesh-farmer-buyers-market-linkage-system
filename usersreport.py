@@ -15,7 +15,7 @@ def save_to_docx(file_name):
         cursor = conn.cursor()
 
         
-        query = "SELECT productname, buyername, price FROM vieworders"
+        query = "SELECT name, password, role FROM userinfo;"
         cursor.execute(query)
         records = cursor.fetchall()
         
@@ -25,13 +25,13 @@ def save_to_docx(file_name):
 
         
         doc = Document()
-        doc.add_heading('Sales Data Report', level=1)
+        doc.add_heading('Users Data Report', level=1)
 
         
         table = doc.add_table(rows=1, cols=3)
         table.style = 'Table Grid'
         hdr_cells = table.rows[0].cells
-        headers = ["Product Name", "Buyer Name", "Price"]
+        headers = ["User Name", "Password", "Role"]
 
         for i, header in enumerate(headers):
             hdr_cells[i].text = header

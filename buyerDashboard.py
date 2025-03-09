@@ -5,11 +5,13 @@ from PyQt6.QtWidgets import *
 import psycopg2
 from functools import partial
 from farmersDashboard import Ui_MainWindow
+from PyQt6.QtGui import QIcon
 
 class Ui_buyerDashboardDialog(object):
     def setupUi(self, buyerDashboardDialog):
         buyerDashboardDialog.setObjectName("buyerDashboardDialog")
         buyerDashboardDialog.resize(954, 719)
+        buyerDashboardDialog.setWindowIcon(QIcon("projectImage.ico"))
         self.widget = QtWidgets.QWidget(parent=buyerDashboardDialog)
         self.widget.setGeometry(QtCore.QRect(0, 0, 261, 711))
         self.widget.setStyleSheet("background-color: rgb(31, 0, 93);")
@@ -361,7 +363,7 @@ class Ui_buyerDashboardDialog(object):
         self.totalitemInCart=0
         self.totalorders=0
         
-        
+        self.setWindowIcon(QIcon("projectImage.ico"))
         self.updatepaymentTableWidget()
         self.updatebrowseproductsTableWidget2()
         self.updatebrowseproductsTableWidget()
@@ -540,17 +542,18 @@ class Ui_buyerDashboardDialog(object):
                         cursor.execute(" SELECT productname,quantity,price  FROM vieworders")
                         results=cursor.fetchall()
                         total_price=0
+                        self.cart_table_Widget_2.setRowCount(0)
                         for rowID,rowData in enumerate(results):
                                 self.cart_table_Widget_2.insertRow(rowID)
                                 for colID,colData in enumerate(rowData):
                                         self.cart_table_Widget_2.setItem(rowID,colID,QTableWidgetItem(str(colData)))
                         
-                                        total_price +=  int(rowData[2])  
-                                        total_row = self.cart_table_Widget_2.rowCount()
-                                        self.cart_table_Widget_2.insertRow(total_row)
-                                        self.cart_table_Widget_2.setItem(total_row, 0, QTableWidgetItem("Total Spent"))
-                                        self.cart_table_Widget_2.setItem(total_row, 2, QTableWidgetItem(str(total_price)))
-                                        self.totalmoneyspentLabel_paymentpagelabel.setText("Total Money Spent:  "+str(total_price))
+                                total_price +=  int(rowData[2])  
+                                total_row = self.cart_table_Widget_2.rowCount()
+                                self.cart_table_Widget_2.insertRow(total_row)
+                        self.cart_table_Widget_2.setItem(total_row, 0, QTableWidgetItem("Total Spent"))
+                        self.cart_table_Widget_2.setItem(total_row, 2, QTableWidgetItem(str(total_price)))
+                        self.totalmoneyspentLabel_paymentpagelabel.setText("Total Money Spent:  "+str(total_price))
  
 
                 

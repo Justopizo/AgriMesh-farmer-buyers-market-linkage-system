@@ -207,13 +207,164 @@ class Ui_admnidashboardDialog(object):
         self.timer=QTimer()
         self.timer.timeout.connect(self.todayDateLableupdate)
         self.timer.timeout.connect(self.populateManageproductlisTablewidget)
+        self.timer.timeout.connect(self.populatemanagebuyertablewidget)
+        self.timer.timeout.connect(self.populatefarmerstableWidget)
+        self.timer.timeout.connect(self.plotuserdistributiongraph)
+        self.timer.timeout.connect(self.plotcategorysalesGraph)
+        self.timer.timeout.connect(self.notify)
         self.timer.start(1000)
-        
+        self.farmer=0
+        self.Buyers=0
         self.todayDateLableupdate()
         self.getFarmercount()
         self.getBuyersCount()
         self.getTotalusers()
         self.populateManageproductlisTablewidget()
+        self.populatemanagebuyertablewidget()
+        self.populatefarmerstableWidget()
+        self.plotcategorysalesGraph()
+        self.downloadusersreport_commandLinkButton.clicked.connect(self.downloadusersreport_commandLinkButtonclicked)
+        self.downloadsalesreport_commandLinkButton.clicked.connect(self.downloadsalesreport_commandLinkButtonclicked)
+        self.allreportscommandLinkButton.clicked.connect(self.allreportscommandLinkButtonclicked)
+        
+    #notifications
+    def notify(self):
+            from getanalysisNotificationReport import generate_report
+            self.analysisAI_textEdit.setText(generate_report())
+        
+    #allreportscommandLinkButtonclicked
+    def allreportscommandLinkButtonclicked(self):
+            from allreports import save_combined_docx
+            filename="allreports.docx"
+            path=save_combined_docx(filename,self.analysisAI_textEdit)
+            QMessageBox.information(None,"Docx",f"Report File '{filename}' saved to {path}")
+        
+    #downloadsalesreport_commandLinkButtonclicked
+    def downloadsalesreport_commandLinkButtonclicked(self):
+            from salesreport import save_to_docx
+            filename="sale_report.docx"
+            path=save_to_docx(filename)
+            QMessageBox.information(None,"Docx",f"sales Report File '{filename}' saved to {path}")
+            
+        
+    #downloadusersreport_commandLinkButtonclicked
+    def downloadusersreport_commandLinkButtonclicked(self):
+            from usersreport import save_to_docx
+            filename="user_Report.pdf"
+            path=save_to_docx(filename)
+            QMessageBox.information(None,"PDF",f"Users Report File '{filename}' saved to {path}")
+        
+      
+    #plotcategorysalesGraph
+    def plotcategorysalesGraph(self):
+        from produceBycategory import ProduceChartHelper
+        chart = ProduceChartHelper(self.salesbycategory_graphicsView)  
+        chart.load_chart()
+        
+            
+    #plotuserdistributiongraph
+    def plotuserdistributiongraph(self):
+                import plotfarmerAgainbuyerstallygraph
+                farmers = self.farmer
+                buyers = self.Buyers
+                plotfarmerAgainbuyerstallygraph.plot_user_distribution(self.userdistribution_graphicsView, farmers, buyers)
+        
+     #populatebuyerstableWidget
+    def populatefarmerstableWidget(self):
+            try:
+                connection=Ui_MainWindow.connectagrimeshDB(self)
+                cursor=connection.cursor()
+                query = """
+ SELECT 
+    u.name, 
+    COALESCE(p.location, 'N/A') AS location, 
+    COALESCE(CAST(p.phoneno AS TEXT), 'N/A') AS phoneno
+FROM userinfo u
+LEFT JOIN profileinfo p ON u.name = p.name WHERE role='Farmer';
+
+
+    """
+
+                cursor.execute(query)
+                records = cursor.fetchall()
+
+                self.managefarmers_tableWidget.setRowCount(len(records))
+
+                for row_index, row_data in enumerate(records):
+                         for col_index, col_data in enumerate(row_data):
+                                 self.managefarmers_tableWidget.setItem(row_index, col_index, QTableWidgetItem(str(col_data)))
+                                 btn=QPushButton("Unregister User")
+                                 self.managefarmers_tableWidget.setCellWidget(row_index,len(row_data),btn)
+                                 btn.clicked.connect(lambda _,r=row_data: self.unregisterfarmer(r))
+                connection.commit()
+                self.managefarmers_tableWidget.resizeColumnToContents(col_index)
+                cursor.close()
+                connection.close()
+                
+            except psycopg2.Error as e:
+                QMessageBox.information(None,"Error",f"Error Occrred {e}")  
+                
+    #unregisterbuyer
+    def unregisterfarmer(self,data):
+            try:
+                name,location,phoneno=data
+                connection=Ui_MainWindow.connectagrimeshDB(self)
+                cursor=connection.cursor()
+                cursor.execute("DELETE FROM userinfo WHERE name=%s;",(name,))
+                connection.commit()
+                QMessageBox.information(None,"Success",f"User '{name}' Unregistered!!")
+                cursor.close()
+                connection.close()
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"Error Occrred {e}")  
+        
+    #populatemanagebuyertablewidget
+    def populatemanagebuyertablewidget(self):
+            try:
+                connection=Ui_MainWindow.connectagrimeshDB(self)
+                cursor=connection.cursor()
+                query = """
+    SELECT 
+        u.name, 
+        COALESCE(b.location, 'N/A') AS location, 
+        COALESCE(b.phoneno, 'N/A') AS phoneno
+    FROM userinfo u
+    LEFT JOIN buyerinfo b ON u.name = b.name WHERE role='Buyer';
+    """
+
+                cursor.execute(query)
+                records = cursor.fetchall()
+
+                self.manageBuyers_tableWidget.setRowCount(len(records))
+
+                for row_index, row_data in enumerate(records):
+                         for col_index, col_data in enumerate(row_data):
+                                 self.manageBuyers_tableWidget.setItem(row_index, col_index, QTableWidgetItem(str(col_data)))
+                                 btn=QPushButton("Unregister User")
+                                 self.manageBuyers_tableWidget.setCellWidget(row_index,len(row_data),btn)
+                                 btn.clicked.connect(lambda _,r=row_data: self.unregisterbuyer(r))
+                connection.commit()
+                   
+                cursor.close()
+                connection.close()
+                
+            except psycopg2.Error as e:
+                QMessageBox.information(None,"Error",f"Error Occrred {e}")
+                
+     #unregisterbuyer
+    def unregisterbuyer(self,data):
+            try:
+                name,location,phoneno=data
+                connection=Ui_MainWindow.connectagrimeshDB(self)
+                cursor=connection.cursor()
+                cursor.execute("DELETE FROM userinfo WHERE name=%s;",(name,))
+                connection.commit()
+                QMessageBox.information(None,"Success",f"User '{name}' Unregistered!!")
+                cursor.close()
+                connection.close()
+            except psycopg2.Error as e:
+                    QMessageBox.information(None,"Error",f"Error Occrred {e}")
+                
         
         
     #populateManageproductlisTablewidget
@@ -288,6 +439,7 @@ class Ui_admnidashboardDialog(object):
                     count=len(results)
                     cursor.close()
                     self.totalfarmers_lcdNumber.display(count)
+                    self.farmer=count
             except psycopg2.Error as e:
                     QMessageBox.information(None,"Error",f"Error Occrred {e}")
                     
@@ -301,6 +453,7 @@ class Ui_admnidashboardDialog(object):
                     count=len(results)
                     cursor.close()
                     self.totalbuyers_lcdNumber.display(count)
+                    self.Buyers=count
             except psycopg2.Error as e:
                     QMessageBox.information(None,"Error",f"Error Occrred {e}")
                     
