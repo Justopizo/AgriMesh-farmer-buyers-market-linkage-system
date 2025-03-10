@@ -826,4 +826,5 @@ if __name__ == "__main__":
     ui = Ui_buyerDashboardDialog()
     ui.setupUi(buyerDashboardDialog)
     buyerDashboardDialog.show()
+  
     sys.exit(app.exec())
