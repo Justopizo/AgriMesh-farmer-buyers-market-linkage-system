@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --icon=projectImage.ico --name=agrimesh --version-file=version.txt agrimesh.py
