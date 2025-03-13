@@ -11,7 +11,7 @@ class Ui_buyerDashboardDialog(object):
     def setupUi(self, buyerDashboardDialog):
         buyerDashboardDialog.setObjectName("buyerDashboardDialog")
         buyerDashboardDialog.resize(954, 719)
-        buyerDashboardDialog.setWindowIcon(QIcon("projectImage.ico"))
+        
         self.widget = QtWidgets.QWidget(parent=buyerDashboardDialog)
         self.widget.setGeometry(QtCore.QRect(0, 0, 261, 711))
         self.widget.setStyleSheet("background-color: rgb(31, 0, 93);")
@@ -363,7 +363,7 @@ class Ui_buyerDashboardDialog(object):
         self.totalitemInCart=0
         self.totalorders=0
         
-        self.setWindowIcon(QIcon("projectImage.ico"))
+        
         self.updatepaymentTableWidget()
         self.updatebrowseproductsTableWidget2()
         self.updatebrowseproductsTableWidget()
@@ -399,8 +399,8 @@ class Ui_buyerDashboardDialog(object):
     <h3>Credits</h3>
     <p>Senior Developer and Designer: Justin Omare</p>
     <p>Team Members:</p>
-    <p>Manyasa Elton - QA Tester & Documentation</p>
-    <p>Jerry Scotch - Frontend Developer</p>
+    <p>Manyasa Elton - System Tester & Documentation</p>
+    <p>Jerry Scotch - Frontend Designer</p>
     <p>Gloria Mongasi - Backend Developer</p>
     <p>Solomon Nyongesa - Database Administrator</p>
     <p>Godwin Kimutai - Python Developer</p>
@@ -752,29 +752,46 @@ class Ui_buyerDashboardDialog(object):
 
     # Update Browse Products Table
     def updatebrowseproductsTableWidget(self):
+        self.browseproductsTableWidget.setColumnCount(7)
+        self.browseproductsTableWidget.setHorizontalHeaderLabels(
+            ["Product Name", "Category", "Quantity", "Price", "Location", "Image", "Actions"]
+        )
         try:
             connection = Ui_MainWindow.connectagrimeshDB(self)
             cursor = connection.cursor()
-            cursor.execute("SELECT productname, category, quantity, price, location FROM produce")
+            cursor.execute("SELECT productname, category, quantity, price, location,imagepath FROM produce")
             results = cursor.fetchall()
 
             self.browseproductsTableWidget.setRowCount(0)
 
             for rowID, rowData in enumerate(results):
                 self.browseproductsTableWidget.insertRow(rowID)
-                for columnID, columnData in enumerate(rowData):
-                    self.browseproductsTableWidget.setItem(rowID, columnID, QTableWidgetItem(str(columnData)))
+                for columnID in range(5):
+                    self.browseproductsTableWidget.setItem(rowID, columnID, QTableWidgetItem(str(rowData[columnID])))
 
-                # Add To Cart Button
+                image_path = rowData[5]
+                imagebtn = QPushButton("View Image")
+                imagebtn.clicked.connect(partial(self.displayproductimage, image_path))
+                self.browseproductsTableWidget.setCellWidget(rowID, 5, imagebtn)
                 btn_add = QPushButton("Add To Cart")
                 btn_add.clicked.connect(partial(self.addToCart, rowID))
-                self.browseproductsTableWidget.setCellWidget(rowID, 5, btn_add)
+                self.browseproductsTableWidget.setCellWidget(rowID, 6, btn_add)
             self.searchproductLinedittextchabged(self.searchproductLinedit.text())
             cursor.close()
             connection.close()
 
         except psycopg2.Error as e:
             QMessageBox.warning(None, "Error", f"Error Occurred: {e}")
+            
+    #displayproductimage
+    def displayproductimage(self,imagepath):
+        from beforeaddingtoCart_displayimage import Ui_productimageDialog
+        self.produceimagedilog = QtWidgets.QMainWindow()
+        self.ui = Ui_productimageDialog()
+        self.ui.setupUi(self.produceimagedilog)
+        self.ui.imagelabelSetImage(imagepath)
+        self.produceimagedilog.setFixedSize(319, 300)
+        self.produceimagedilog.show()
             
     def addToCart(self,row):
         

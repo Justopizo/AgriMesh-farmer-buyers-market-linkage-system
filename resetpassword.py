@@ -62,7 +62,6 @@ class Ui_forgotpasswordDialog(object):
         if not self.resetcodeLinEdit.text():
             import random
             code=str(random.randint(1000,9999))
-            QMessageBox.information(None,"RESET CODE","The System Autodetected Code And Autofilled It for You!!")
             self.resetcodeLinEdit.setText(code)
         
     
@@ -93,6 +92,12 @@ class Ui_forgotpasswordDialog(object):
             itExist=cursor.fetchone()
             
             if itExist:
+                    cursor.execute("SELECT password FROM userinfo WHERE name=%s; ",(usernamReset,))
+                    findsamepass=cursor.fetchone()
+                    if findsamepass and findsamepass[0] == newpassword:
+                        QMessageBox.information(None,"Error","You can't Use Your Old password as New Password!")
+                        return
+                        
                     cursor.execute("UPDATE userinfo SET password=%s WHERE name=%s;",(newpassword,usernamReset))
                     QMessageBox.information(None,"Success","Password Reset Successful!")
                     connection.commit()

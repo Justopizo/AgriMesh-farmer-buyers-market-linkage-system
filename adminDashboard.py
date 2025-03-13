@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import *
 from farmersDashboard import Ui_MainWindow
 import psycopg2
 from    PyQt6.QtCore import QTimer,QDateTime
+from PyQt6.QtGui import QIcon
 
 class Ui_admnidashboardDialog(object):
     def setupUi(self, admnidashboardDialog):

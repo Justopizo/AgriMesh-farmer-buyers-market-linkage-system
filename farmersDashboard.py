@@ -648,10 +648,7 @@ class Ui_MainWindow(object):
         self.updatenotificationstextEdit_settingspage()
         self.checkordercancelledbyadmin()
         self.pendingorder=0
-        
         self.availableproduce=0
-        
-        
         
         
     #checkordercancelledbyadmin
@@ -1193,6 +1190,12 @@ class Ui_MainWindow(object):
                         QMessageBox.information(None,"Error","Produce Added Successfully!")
                         cursor.close()
                         connection.close()
+                        self.productnamelineEdit.clear()
+                        self.quantitylinedit.clear()
+                        self.pricelinedit.clear()
+                        self.locationlinedit.clear()
+                        self.imageproducepath.clear()
+                        self.imagesettinglabel.clear()
                 except psycopg2.Error as e:
                         QMessageBox.information(None,"Error",f"An error Occurred {e}")
     

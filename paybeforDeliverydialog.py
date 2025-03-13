@@ -39,11 +39,11 @@ class Ui_paybeforedeliveryDialog(object):
     def is_connected(self):
         import socket
         try:
-       
-          socket.create_connection(("8.8.8.8", 53), timeout=5)
-          return True
-        except OSError:
-          return False    
+            socket.create_connection(("8.8.8.8", 53), timeout=5)
+            return True
+        except (OSError, socket.error):  
+            return False
+    
         
     #paypushbuttonclicked
     def paypushbuttonclicked(self):
@@ -54,6 +54,10 @@ class Ui_paybeforedeliveryDialog(object):
              return
         
         if phoneno.startswith("254"):
+            if not self.is_connected():
+                    QMessageBox.warning(None, "Network Error", "No internet connection detected! Please check your connection.")
+                    return
+
             if self.is_connected():
                 import access_token
                 access_token.LipanaMpesaPpassword.phoneno=phoneno
