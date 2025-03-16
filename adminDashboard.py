@@ -375,8 +375,10 @@ LEFT JOIN profileinfo p ON u.name = p.name WHERE role='Farmer';
                     cursor=connection.cursor()
                     cursor.execute("SELECT productname, category, quantity, price,  imagepath  FROM produce")
                     results=cursor.fetchall()
-                    self.manageproductlistings_tableWidget.setRowCount(len(results))
+                    self.manageproductlistings_tableWidget.setRowCount(0)
+                    
                     for row,produce in enumerate(results):
+                            self.manageproductlistings_tableWidget.insertRow(row)
                             for col in range(4):
                                 self.manageproductlistings_tableWidget.setItem(row,col,QTableWidgetItem(str(produce[col])))
                                 viewimage=QPushButton("View Image")
@@ -397,7 +399,9 @@ LEFT JOIN profileinfo p ON u.name = p.name WHERE role='Farmer';
                     cursor=connection.cursor()
                     cursor.execute("UPDATE produce SET status='Cancelled' WHERE productname=%s;",(productname,))
                     connection.commit()
+                    
                     QMessageBox.information(None,"Success",f"Product '{productname}' Deleted successfully!")
+                    self.populateManageproductlisTablewidget()
                     cursor.close()
                     connection.close()    
                     
@@ -484,7 +488,7 @@ LEFT JOIN profileinfo p ON u.name = p.name WHERE role='Farmer';
         self.dashboardwidgetpushButton.setText(_translate("admnidashboardDialog", "Dashboard"))
         self.managefarmerspushbutton.setText(_translate("admnidashboardDialog", "Manage Farmers"))
         self.managebuyerspushbutton.setText(_translate("admnidashboardDialog", "Manage Buyers"))
-        self.manageproductslisting.setText(_translate("admnidashboardDialog", "Manage Product Listing"))
+        self.manageproductslisting.setText(_translate("admnidashboardDialog", "Manage Product Listings"))
         self.reportsandanalyticspushbutton.setText(_translate("admnidashboardDialog", "Reports and Analytics"))
         self.logoutpushbutton.setText(_translate("admnidashboardDialog", "Logout"))
         self.groupBox.setTitle(_translate("admnidashboardDialog", "Quick Actions"))

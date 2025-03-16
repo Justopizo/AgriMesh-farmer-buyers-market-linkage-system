@@ -87,12 +87,16 @@ class Ui_loginOrregistrationDialog(object):
         password=self.passswordlinedit.text()
         role=self.rolecomboBox.currentText()
         
-        if not name or not password or  len(password)>4:
+        if not name or not password :
             
-            QMessageBox.warning(None,"Error","All Fields Are Required!\n And Password must be less than 4 characters!")
+            QMessageBox.warning(None,"Error","All Fields Are Required!")
+            
+            return  
+        elif len(password)>4: 
+            QMessageBox.warning(None,"Error","Password must be less than 4 characters")
             self.passswordlinedit.clear()
-            self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")  
-            return   
+            self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters") 
+            return
         else:
             try:
                 connection=psycopg2.connect(
@@ -115,7 +119,7 @@ class Ui_loginOrregistrationDialog(object):
                         if password==storedPassword and  role==storedrole :
                             pass
                         else:
-                            QMessageBox.warning(None,"User Already Exists","User Already Exists\nWrong Password Or role mismatch!")
+                            QMessageBox.warning(None,"User Already Exists","User Already Exists!")
                             return
                 
                 if useralreadyExists:
@@ -167,7 +171,12 @@ class Ui_loginOrregistrationDialog(object):
         role=self.rolecomboBox.currentText()
         
         if not name or not password or  len(password)>4:
-            QMessageBox.warning(None,"Error","All Fields Are Required!\n And Password must be less than 4 characters!")
+            QMessageBox.warning(None,"Error","All Fields Are Required!")
+            self.passswordlinedit.clear()
+            self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")
+            return
+        elif len(password)>4:
+            QMessageBox.warning(None,"Error","Password must be less than 4 characters")
             self.passswordlinedit.clear()
             self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")
             return

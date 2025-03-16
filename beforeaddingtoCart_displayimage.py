@@ -25,10 +25,10 @@ class Ui_productimageDialog(object):
         if not imagepath or not os.path.exists(imagepath):
             QMessageBox.warning(None, "Error", "Image not found!")
             return
-
-        pixmap = QPixmap(imagepath)
-        self.imagelabel.setPixmap(pixmap)
-        self.imagelabel.setScaledContents(True)
+        else:
+            pixmap = QPixmap(imagepath)
+            self.imagelabel.setPixmap(pixmap)
+            self.imagelabel.setScaledContents(True)
 
 
 if __name__ == "__main__":

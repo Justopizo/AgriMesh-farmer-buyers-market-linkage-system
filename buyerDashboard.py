@@ -293,7 +293,7 @@ class Ui_buyerDashboardDialog(object):
         self.cartpushbutton.setText(_translate("buyerDashboardDialog", "Cart"))
         self.paymentpushbutton.setText(_translate("buyerDashboardDialog", "Payment History"))
         self.profilepushbutton.setText(_translate("buyerDashboardDialog", "Profile"))
-        self.settingspushbutton.setText(_translate("buyerDashboardDialog", "Settings"))
+        self.settingspushbutton.setText(_translate("buyerDashboardDialog", "Account Settings"))
         self.logoutbutton.setText(_translate("buyerDashboardDialog", "Logout"))
         self.groupBox_3.setTitle(_translate("buyerDashboardDialog", "Key Metrics"))
         self.label_26.setText(_translate("buyerDashboardDialog", "Total orders"))

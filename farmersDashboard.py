@@ -539,7 +539,7 @@ class Ui_MainWindow(object):
         self.productcategorycomboBox.setItemText(4, _translate("MainWindow", "Animals"))
         self.productcategorycomboBox.setItemText(5, _translate("MainWindow", "Others"))
         self.label_3.setText(_translate("MainWindow", "Quantity"))
-        self.quantitylinedit.setPlaceholderText(_translate("MainWindow", "e.g 2kg,1L or 2"))
+        self.quantitylinedit.setPlaceholderText(_translate("MainWindow", "e.g 2kg,1L or 2 Cows.."))
         self.label_4.setText(_translate("MainWindow", "Price"))
         self.label_5.setText(_translate("MainWindow", "Image Produce Path"))
         self.label_6.setText(_translate("MainWindow", "Location"))
@@ -649,8 +649,12 @@ class Ui_MainWindow(object):
         self.checkordercancelledbyadmin()
         self.pendingorder=0
         self.availableproduce=0
-        
-        
+        self.saveChanges_editproducewidgetpushButton.clicked.connect(self.saveChanges_editproducewidgetpushButtonclicked)
+    
+    
+    #saveChanges_editproducewidgetpushButtonclicked
+    def saveChanges_editproducewidgetpushButtonclicked(self):
+                QMessageBox.information(None,"Saved","Changes Made Successfully!")
     #checkordercancelledbyadmin
     def checkordercancelledbyadmin(self):
             try:
@@ -658,8 +662,11 @@ class Ui_MainWindow(object):
                     cursor=connnection.cursor()
                     cursor.execute("SELECT * FROM produce WHERE status='Cancelled'")
                     results=cursor.fetchall()
-                    if results:
-                        count=len(results)
+                
+                    count=len(results)
+                    if count<1:
+                            pass
+                    else:
                         QMessageBox.information(None,"SO sad",f"{count} Product(s) Were Cancelled By admin!")
                         cursor.execute("DELETE FROM produce WHERE status='Cancelled'")
                         connnection.commit()
@@ -677,8 +684,12 @@ class Ui_MainWindow(object):
                     connection=self.connectagrimeshDB()
                     cursor=connection.cursor()
                     
-                    cursor.execute("SELECT notification FROM notifications")
+                    cursor.execute("SELECT DISTINCT notification FROM notifications")
+                    
+
                     notifications = cursor.fetchall()  
+                    countnoOfnotification=len(notifications)
+                    self.settingspushbutton.setText(f"Settings and notifications ({countnoOfnotification})")
 
                     cursor.close()
                     connection.close()
@@ -880,15 +891,24 @@ class Ui_MainWindow(object):
                 cursor.close()
                 connection.close()
          except psycopg2.Error as e:
+                
                 QMessageBox.information(None,"Database Error",f"Error Occurred {e}")
                 
     
     
     #acceptAndDispatchOrder
     def acceptAndDispatchOrder(self,row):
-            QMessageBox.information(None,"Order Confirmed","Order was Confirmed. And The buyer Notified!")
+                connection=self.connectagrimeshDB()
+                cursor=connection.cursor()
+                cursor.execute("UPDATE vieworders SET status = 'Order Confirmed' WHERE buyername = %s AND phoneno = %s;",(str(row[0]),str(row[1])))
+               
+                connection.commit()
+                cursor.close()
+                connection.close()
+                QMessageBox.information(None,"Order Confirmed","Order was Confirmed. And The buyer Notified!")
     #logoutpushbuttonClicked
     def logoutpushbuttonClicked(self):
+        QMessageBox.information(None,"Logout","Are You Sure You Want To Logout?")
         from loginandRegistrationDialog import Ui_loginOrregistrationDialog
         self.loginwindow = QtWidgets.QMainWindow()
         self.ui = Ui_loginOrregistrationDialog()
@@ -931,8 +951,11 @@ class Ui_MainWindow(object):
         newpassword=self.newpasswordlinedit_settings.text()
         
         if not oldpassword or not newpassword or  len(oldpassword)>4 or  len(newpassword)>4:
-                QMessageBox.warning(None,"Error","All Fields Are Required!\nPassword must also be less than 4 characters!")
+                QMessageBox.warning(None,"Error","All Fields Are Required!")
                 return
+        elif not len(oldpassword)>4 or not len(newpassword)>4:
+                QMessageBox.warning(None,"Error","Password must  be less than 4 characters!")
+                
         else:
                 connection=self.connectagrimeshDB()
                 cursor=connection.cursor()
@@ -1154,8 +1177,15 @@ class Ui_MainWindow(object):
         location=self.locationlinedit.text()
         imagepath=self.imageproducepath.text()
         
+        
         if not productname or not location or not quantity or not price or not imagepath:
                 QMessageBox.information(None,"Error","All fields Are Required!")
+                return
+        elif not price.isdigit():
+                QMessageBox.information(None,"Error","Price Must be an Integer")
+                return
+        elif int(price)<1:
+                QMessageBox.information(None,"Error","Invalid Price!")
                 return
         else:
                 try:
@@ -1202,14 +1232,14 @@ class Ui_MainWindow(object):
     #uploadProduceImagepushButtonClicked
     def uploadProduceImagepushButtonClicked(self):
         fileFilter="Images (*.png *.jpg *.BMP *.GIF *.TIFF *.webp)"
-        filepath,_=QFileDialog.getOpenFileName(None,"SELCT IMAGE FILE","",fileFilter)
+        filepath,_=QFileDialog.getOpenFileName(None,"SELECT IMAGE FILE","",fileFilter)
         if filepath:
                 from PyQt6.QtGui import QPixmap
-                QMessageBox.information(None,"Success","Image uploaded Successfully!")
                 self.imageproducepath.setText(filepath)
                 pixmap = QPixmap(filepath)
                 self.imagesettinglabel.setPixmap(pixmap)
                 self.imagesettinglabel.setScaledContents(True)
+                QMessageBox.information(None,"Success","Image uploaded Successfully!")
            
         else:
               QMessageBox.information(None,"Success","Image Not Uploaded Try Again!")  

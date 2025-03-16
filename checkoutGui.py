@@ -88,6 +88,10 @@ class Ui_checkOutDialog(object):
         buyername=self.buyerNamelineEdit.text()
         phoneno=self.buyerphonenumberlineEdit.text()
         paymentmethod=self.delierMethodcomboBox.currentText().strip()
+        
+        
+        verify=phoneno.startswith("07")
+         
         import psycopg2
         if not buyername or not phoneno:
             QMessageBox.warning(None,"Error","All Fields Are Required!")
@@ -110,6 +114,13 @@ class Ui_checkOutDialog(object):
                                )
                                
                                """)
+                if len(phoneno)!=10:
+                    QMessageBox.warning(None,"Error","Phone Number must be 10 digits")
+                    return
+                elif  not verify:
+                     QMessageBox.warning(None,"Error","Phone Number must Start With either '07'")
+                     return
+                    
                 cursor.execute("""
                                INSERT INTO vieworders(buyername,phoneno,productname,quantity,price,paymentmethod)
                                VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT(productname) DO NOTHING;
