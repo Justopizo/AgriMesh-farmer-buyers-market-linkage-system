@@ -1,0 +1,6 @@
+To run **Agrimesh.exe**, ensure the following dependencies are installed:  
+
+1. **Python 3.12 or later** – Required for executing the application.  
+2. **PostgreSQL** – Necessary for database operations.  
+
+Without these dependencies, the system will fail to run and may crash.
