@@ -1,0 +1,7 @@
+Examples of Milestones:
+Project Planning Completed – Finalized requirements and scope.
+Prototype Ready – First working version available.
+Feature Implementation Done – Core features developed.
+Beta Release – Public or internal testing starts.
+Final Testing Completed – All bugs fixed.
+Project Launch – Software goes live.
