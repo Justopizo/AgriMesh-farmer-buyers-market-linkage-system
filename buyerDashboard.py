@@ -664,6 +664,7 @@ class Ui_buyerDashboardDialog(object):
             totalitem  =str(totalitem)     
             self.productsinCartLabel.setText(f"Products In Cart: {totalitem}")
             self.productsinCartLabel.setStyleSheet("font-size: 20px;")
+            self.cartpushbutton.setText(f"Cart  ({totalitem})")
             cursor.close()
             connection.close()
 
@@ -673,7 +674,7 @@ class Ui_buyerDashboardDialog(object):
     # Remove From Cart
     def removeFromCart(self, row):
         try:
-            # Ensure row is valid
+            
             if row >= self.cart_table_Widget.rowCount():
                 QMessageBox.warning(None, "Error", "Invalid row selected!")
                 return

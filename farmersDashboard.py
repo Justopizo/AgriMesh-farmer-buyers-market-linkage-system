@@ -791,8 +791,8 @@ class Ui_MainWindow(object):
                     cursor=connection.cursor()
                     
                     cursor.execute("""
-                                   SELECT productname,buyername,price FROM vieworders
-                                   """)
+                                   SELECT productname,buyername,price FROM vieworders WHERE status=%s;
+                                   """,("Order Confirmed",))
                     results=cursor.fetchall()
                     if results:
                         self.salestableWidget_sales.setRowCount(0)
@@ -1210,13 +1210,6 @@ class Ui_MainWindow(object):
                                        """,(productname,category,quantity,price,location,imagepath))
                         connection.commit()
                         
-                        from plyer import notification
-                        notification.notify(
-                                title="Success",
-                                message=f"{productname} added successfully!",
-                                app_name="JustoSoftwares"
-                                
-                        )
                         QMessageBox.information(None,"Error","Produce Added Successfully!")
                         cursor.close()
                         connection.close()

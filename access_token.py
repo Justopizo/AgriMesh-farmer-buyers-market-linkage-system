@@ -23,7 +23,7 @@ class MpesaAccessToken:
 
 class LipanaMpesaPpassword:
     phoneno=254793031269
-    amount=1
+    amount=100
     lipa_time = datetime.now().strftime('%Y%m%d%H%M%S')
     Business_short_code = "174379"
     OffSetValue = '0'

@@ -46,7 +46,7 @@ class Ui_paybeforedeliveryDialog(object):
     
         
     #paypushbuttonclicked
-    def paypushbuttonclicked(self):
+    def paypushbuttonclicked(self,amount):
         phoneno=self.mpesaPhoneNolinedit.text()
         
         if not phoneno:
@@ -61,6 +61,9 @@ class Ui_paybeforedeliveryDialog(object):
             if self.is_connected():
                 import access_token
                 access_token.LipanaMpesaPpassword.phoneno=phoneno
+                access_token.LipanaMpesaPpassword.amount=int(amount)
+                
+
                 import mpesa
                 mpesa.lipa_na_mpesa_online(access_token.request)
             

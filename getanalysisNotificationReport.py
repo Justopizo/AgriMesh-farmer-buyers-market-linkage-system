@@ -2,6 +2,7 @@ import os
 import psycopg2
 from docx import Document
 from PyQt6.QtWidgets import QTextEdit
+from adminDashboard import Ui_admnidashboardDialog
 
 def generate_report():
     try:
@@ -21,6 +22,7 @@ def generate_report():
         report_text += "Sales Data Report\n\n"
         cursor.execute("SELECT buyername, phoneno, productname, quantity, price, status FROM vieworders;")
         sales_records = cursor.fetchall()
+       
         sales_headers = ["Buyer Name", "Phone No", "Product Name", "Quantity", "Price", "Status"]
         report_text += "\t".join(sales_headers) + "\n"
         for row in sales_records:
@@ -51,4 +53,15 @@ def generate_report():
     except Exception as e:
         return f"Error: {e}"
 
+def getnoOfNewnotifications():
+    conn = psycopg2.connect(
+            host="localhost",
+            user="postgres",
+            password="3062",
+            database="agrimesh"
+        )
+    cursor = conn.cursor()
+    cursor.execute("SELECT buyername, phoneno, productname, quantity, price, status FROM vieworders;")
+    sales_records = cursor.fetchall()
+    return len(sales_records)
 

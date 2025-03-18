@@ -230,8 +230,10 @@ class Ui_admnidashboardDialog(object):
         
     #notifications
     def notify(self):
-            from getanalysisNotificationReport import generate_report
+            from getanalysisNotificationReport import generate_report,getnoOfNewnotifications
             self.analysisAI_textEdit.setText(generate_report())
+            
+            self.reportsandanalyticspushbutton.setText(f"Reports and Analytics ({getnoOfNewnotifications()})")
         
     #allreportscommandLinkButtonclicked
     def allreportscommandLinkButtonclicked(self):
@@ -373,7 +375,7 @@ LEFT JOIN profileinfo p ON u.name = p.name WHERE role='Farmer';
             try:
                     connection=Ui_MainWindow.connectagrimeshDB(self)
                     cursor=connection.cursor()
-                    cursor.execute("SELECT productname, category, quantity, price,  imagepath  FROM produce")
+                    cursor.execute("SELECT productname, category, quantity, price,  imagepath  FROM produce WHERE status=%s;",("VERIFIED",))
                     results=cursor.fetchall()
                     self.manageproductlistings_tableWidget.setRowCount(0)
                     

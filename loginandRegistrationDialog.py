@@ -1,6 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 import psycopg2
+from datetime import datetime
 
 class Ui_loginOrregistrationDialog(object):
     def setupUi(self, loginOrregistrationDialog):
@@ -110,20 +111,12 @@ class Ui_loginOrregistrationDialog(object):
                 
                 cursor.execute("SELECT * FROM userinfo WHERE name=%s AND password=%s;",(name,password))
                 useralreadyExists=cursor.fetchone()
-                cursor.execute("SELECT password,role FROM userinfo WHERE name=%s;",(name,))
-                results=cursor.fetchone()
-                    
-                if results:
-                        storedPassword,storedrole=results
-                        
-                        if password==storedPassword and  role==storedrole :
-                            pass
-                        else:
-                            QMessageBox.warning(None,"User Already Exists","User Already Exists!")
-                            return
+                
                 
                 if useralreadyExists:
-                    
+                    description = f"{name} logged into the system as {role} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                    cursor.execute("INSERT INTO loginlogs(description) VALUES(%s);",(description,))
+                    connection.commit()
                     if role=="Farmer":
                         QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Farmer.Let's Grow Together!")
                          
@@ -196,11 +189,11 @@ class Ui_loginOrregistrationDialog(object):
                                )
                                """)
             connection.commit()
-            cursor.execute("SELECT * FROM userinfo WHERE name=%s AND password=%s;",(name,password))
+            cursor.execute("SELECT * FROM userinfo WHERE name=%s;",(name,))
             useralreadyExists=cursor.fetchone()
             
             if useralreadyExists:
-                QMessageBox.warning(None,"User Exists","User Already Exists.Please Login!")
+                QMessageBox.warning(None,"User Exists","UserName Already Exists.Please Choose a Different one!")
                 self.passswordlinedit.clear()
             else:
                 cursor.execute("""
@@ -209,7 +202,10 @@ class Ui_loginOrregistrationDialog(object):
                                """,(name,password,role))
                 connection.commit()
                 QMessageBox.information(None,"Success","Registration Successful!")
-                
+                cursor.execute("CREATE TABLE IF NOT EXISTS loginlogs(description VARCHAR(1000))")
+                description = f"{name} Registered into the system as {role} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                cursor.execute("INSERT INTO loginlogs(description) VALUES(%s);",(description,))
+                connection.commit()
                 if role=="Farmer":
                     
                     from farmersDashboard import Ui_MainWindow
