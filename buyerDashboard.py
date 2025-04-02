@@ -403,7 +403,7 @@ class Ui_buyerDashboardDialog(object):
     <p>Jerry Scotch - Frontend Designer</p>
     <p>Gloria Mongasi - Backend Developer</p>
     <p>Solomon Nyongesa - Database Administrator</p>
-    <p>Godwin Kimutai - Python Developer</p>
+    <p>Godwin Kimutai - Frontend Developer</p>
     <p><em>Motto: Software that has no limits</em></p>
 </body>
 </html>

@@ -95,7 +95,6 @@ class Ui_loginOrregistrationDialog(object):
             return  
         elif len(password)>4: 
             QMessageBox.warning(None,"Error","Password must be less than 4 characters")
-            self.passswordlinedit.clear()
             self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters") 
             return
         else:
@@ -109,11 +108,19 @@ class Ui_loginOrregistrationDialog(object):
                 )
                 cursor=connection.cursor()
                 
-                cursor.execute("SELECT * FROM userinfo WHERE name=%s AND password=%s;",(name,password))
+                cursor.execute("SELECT * FROM userinfo WHERE name=%s;", (name,))
                 useralreadyExists=cursor.fetchone()
                 
-                
                 if useralreadyExists:
+                    password2=useralreadyExists[1]
+                    if password!=password2:
+                            QMessageBox.information(None,"Wrong Password","Wrong Password")
+                            return
+                    
+                    role2=useralreadyExists[2]
+                    if role!=role2:
+                        QMessageBox.information(None,"Wrong role","User Found, but Role Does Not Match!")
+                        return
                     description = f"{name} logged into the system as {role} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
                     cursor.execute("INSERT INTO loginlogs(description) VALUES(%s);",(description,))
                     connection.commit()
@@ -163,14 +170,12 @@ class Ui_loginOrregistrationDialog(object):
         password=self.passswordlinedit.text()
         role=self.rolecomboBox.currentText()
         
-        if not name or not password or  len(password)>4:
+        if not name or not password :
             QMessageBox.warning(None,"Error","All Fields Are Required!")
-            self.passswordlinedit.clear()
             self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")
             return
         elif len(password)>4:
             QMessageBox.warning(None,"Error","Password must be less than 4 characters")
-            self.passswordlinedit.clear()
             self.passswordlinedit.setPlaceholderText("Password must be less than 4 characters")
             return
         else:
@@ -214,8 +219,9 @@ class Ui_loginOrregistrationDialog(object):
                     self.ui.setupUi(self.farmerdash)
                     self.farmerdash.setFixedSize(953, 717)
                     self.farmerdash.show()
-                    self.name=self.usernamelineEdit.text().lower()
                     QtWidgets.QApplication.instance().activeWindow().close()
+                    self.name=self.usernamelineEdit.text().lower()
+                   
                     
                 elif role=="Buyer":
                     from buyerDashboard import Ui_buyerDashboardDialog
