@@ -137,6 +137,9 @@ color: rgb(255, 255, 255);</string>
        <height>711</height>
       </rect>
      </property>
+     <property name="currentIndex">
+      <number>5</number>
+     </property>
      <widget class="QWidget" name="dashboardPagewidget">
       <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
@@ -382,7 +385,7 @@ text-decoration: underline;</string>
         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="AddproduceTab">
         <attribute name="title">
@@ -575,8 +578,8 @@ text-decoration: underline;</string>
           <rect>
            <x>190</x>
            <y>320</y>
-           <width>200</width>
-           <height>200</height>
+           <width>241</width>
+           <height>211</height>
           </rect>
          </property>
          <property name="styleSheet">

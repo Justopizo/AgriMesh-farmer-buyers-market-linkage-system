@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>buyerDashboardDialog</class>
+ <widget class="QDialog" name="buyerDashboardDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>954</width>
+    <height>719</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Buyer-Agrimesh Company</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>261</width>
+     <height>711</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(31, 0, 93);</string>
+   </property>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>251</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="dashboardwidgetpushButton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Dashboard</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="browseproductspushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Browse Products</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="myorderspushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>My Orders</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cartpushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Cart</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="paymentpushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Payment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="profilepushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="settingspushbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="logoutbutton">
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>0</y>
+     <width>691</width>
+     <height>711</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>671</width>
+      <height>701</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="dashboardpage">
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>361</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Key Metrics</string>
+      </property>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+       </property>
+       <property name="text">
+        <string>Total orders</string>
+       </property>
+      </widget>
+      <widget class="QLCDNumber" name="totalorderslcdNumber">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>64</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_27">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>30</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+       </property>
+       <property name="text">
+        <string>orders in Cart</string>
+       </property>
+      </widget>
+      <widget class="QLCDNumber" name="ordersInCartLCDnumber">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>60</y>
+         <width>64</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>111</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 8pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+       </property>
+       <property name="text">
+        <string>Cancelled Orders</string>
+       </property>
+      </widget>
+      <widget class="QLCDNumber" name="cancelledordersLCDdisplay">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>64</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>240</y>
+        <width>361</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Quick Actions</string>
+      </property>
+      <widget class="QCommandLinkButton" name="settingscommandLinkButton_dashboard">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>222</width>
+         <height>48</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Settings</string>
+       </property>
+      </widget>
+      <widget class="QCommandLinkButton" name="profilecommandLinkButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>222</width>
+         <height>48</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>profile</string>
+       </property>
+      </widget>
+      <widget class="QCommandLinkButton" name="cartCommandlinkbutton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>222</width>
+         <height>48</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Cart</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>680</y>
+        <width>271</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>WE ARE PROUD TO SERVE YOU</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>480</y>
+        <width>361</width>
+        <height>181</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>HELP AND SUPPORT</string>
+      </property>
+      <widget class="QTextEdit" name="helpandsupporttextEdit">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>361</width>
+         <height>171</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="browseproductspage">
+     <widget class="QTableWidget" name="browseproductsTableWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>681</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>Product Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Category</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Quantity</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Location</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Action</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>460</y>
+        <width>241</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Search Your Preffered Product</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="searchproductLinedit">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>460</y>
+        <width>331</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="placeholderText">
+       <string>Type some words</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="myorderspage">
+     <widget class="QTableWidget" name="browseproductsTableWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>681</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>Product Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Quantity</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Action</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="cartpage">
+     <widget class="QTableWidget" name="cart_table_Widget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>681</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>Product Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Quantity</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Action 1</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Action 2</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="productsinCartLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>470</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Products in The Cart: </string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="paymentspage">
+     <widget class="QTableWidget" name="cart_table_Widget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>681</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>Product Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Quantity</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="totalmoneyspentLabel_paymentpagelabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>450</y>
+        <width>171</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Total money Spent: </string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="profilepage">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>431</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Personal info</string>
+      </property>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>51</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_20">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Location</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_21">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>PhoneNo.</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="namelineEdit_seettingspage">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>40</y>
+         <width>331</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="locationlineEdit_seettingspage_2">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>80</y>
+         <width>331</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="phoneNoineEdit_seettingspage_2">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>120</y>
+         <width>331</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="updateprofilebutton">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>160</y>
+         <width>93</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="settingspage">
+     <widget class="QGroupBox" name="accountsettingsgroupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>371</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Account Settings</string>
+      </property>
+      <widget class="QLabel" name="label_22">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>131</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 9pt &quot;MS Shell Dlg 2&quot;;
+text-decoration: underline;</string>
+       </property>
+       <property name="text">
+        <string>Change Password</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_23">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Old Password</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_24">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>New Password</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="oldpasswordlineEdit_settings">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>60</y>
+         <width>221</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="newpasswordlinedit_settings">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>100</y>
+         <width>221</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="changePasswordpushButton">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>150</y>
+         <width>93</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

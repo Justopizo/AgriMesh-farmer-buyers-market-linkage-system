@@ -401,7 +401,7 @@ class Ui_buyerDashboardDialog(object):
     <p>Team Members:</p>
     <p>Manyasa Elton - System Tester & Documentation</p>
     <p>Jerry Scotch - Frontend Designer</p>
-    <p>Gloria Mongasi - Backend Developer</p>
+    <p>Gloria Mongasi - Database Admin</p>
     <p>Solomon Nyongesa - Database Administrator</p>
     <p>Godwin Kimutai - Frontend Developer</p>
     <p><em>Motto: Software that has no limits</em></p>
@@ -825,15 +825,23 @@ class Ui_buyerDashboardDialog(object):
     
     #logoutbuttonclicked
     def logoutbuttonclicked(self):
-        QMessageBox.information(None,"Logout","Are you sure you want to logout?")
-        from loginandRegistrationDialog import Ui_loginOrregistrationDialog
-        self.loginwindow = QtWidgets.QMainWindow()
-        self.ui = Ui_loginOrregistrationDialog()
-        self.ui.setupUi(self.loginwindow)
-        self.loginwindow.setFixedSize(400, 340)
-        self.loginwindow.show()
-        QtWidgets.QApplication.instance().activeWindow().close()
-        QMessageBox.information(None,"Loggout Successfully","LOGGED OUT SUCCESSFULLY!")
+        reply = QMessageBox.question(
+        None, "Logout", "Are you sure you want to logout?",
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        QMessageBox.StandardButton.Cancel
+    )
+
+        if reply == QMessageBox.StandardButton.Yes:
+                from loginandRegistrationDialog import Ui_loginOrregistrationDialog
+                QApplication.instance().activeWindow().close()
+                self.loginwindow = QMainWindow()
+                self.ui = Ui_loginOrregistrationDialog()
+                self.ui.setupUi(self.loginwindow)
+                self.loginwindow.setFixedSize(400, 340)
+                self.loginwindow.show()
+                QMessageBox.information(None, "Logout Successful", "Logged out successfully!")
+        else:
+                 pass
         
 
 

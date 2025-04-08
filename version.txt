@@ -14,11 +14,11 @@ VSVersionInfo(
     StringFileInfo([
       StringTable(
         u'040904B0', [
-          StringStruct(u'CompanyName', u'Justo Pizo Tech'),
+          StringStruct(u'CompanyName', u'Justo Pizo Softwares'),
           StringStruct(u'FileDescription', u'Agrimesh Company System'),
           StringStruct(u'FileVersion', u'1.0.0.0'),
           StringStruct(u'InternalName', u'agrimesh'),
-          StringStruct(u'LegalCopyright', u'© 2025 Justo Pizo Tech'),
+          StringStruct(u'LegalCopyright', u'© 2025 Justo Pizo Softwares'),
           StringStruct(u'OriginalFilename', u'agrimesh'),
           StringStruct(u'ProductName', u'Agrimesh'),
           StringStruct(u'ProductVersion', u'1.0.0.0')

@@ -199,7 +199,7 @@ class Ui_loginOrregistrationDialog(object):
             
             if useralreadyExists:
                 QMessageBox.warning(None,"User Exists","UserName Already Exists.Please Choose a Different one!")
-                self.passswordlinedit.clear()
+                
             else:
                 cursor.execute("""
                                INSERT INTO userinfo(name,password,role) 

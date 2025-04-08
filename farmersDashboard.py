@@ -908,15 +908,25 @@ class Ui_MainWindow(object):
                 QMessageBox.information(None,"Order Confirmed","Order was Confirmed. And The buyer Notified!")
     #logoutpushbuttonClicked
     def logoutpushbuttonClicked(self):
-        QMessageBox.information(None,"Logout","Are You Sure You Want To Logout?")
-        from loginandRegistrationDialog import Ui_loginOrregistrationDialog
-        self.loginwindow = QtWidgets.QMainWindow()
-        self.ui = Ui_loginOrregistrationDialog()
-        self.ui.setupUi(self.loginwindow)
-        self.loginwindow.setFixedSize(400, 340)
-        self.loginwindow.show()
-        QtWidgets.QApplication.instance().activeWindow().close()
-        QMessageBox.information(None,"Loggout Successfully","LOGGED OUT SUCCESSFULLY!")
+
+        reply = QMessageBox.question(
+        None, "Logout", "Are you sure you want to logout?",
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        QMessageBox.StandardButton.Cancel
+    )
+        if reply == QMessageBox.StandardButton.Yes:
+                from loginandRegistrationDialog import Ui_loginOrregistrationDialog
+                self.loginwindow = QMainWindow()
+                self.ui = Ui_loginOrregistrationDialog()
+                self.ui.setupUi(self.loginwindow)
+                self.loginwindow.setFixedSize(400, 340)
+                self.loginwindow.show()
+                QApplication.instance().activeWindow().close()
+                QMessageBox.information(None, "Logout Successful", "Logged out successfully!")
+
+        else:
+                 pass
+      
         
     #requestdeletionofAccountcommandLinkButtonClicked
     def requestdeletionofAccountcommandLinkButtonClicked(self):
@@ -943,6 +953,7 @@ class Ui_MainWindow(object):
     def  setavalabilitytabclicked(self,index):
             if index == 2 and self.tabWidget.tabText(2)=="Set Availability":
                     QMessageBox.information(None,"Unfortunately!","This Section Is Under Maintainance!\n Come Back Later")
+                    self.stackedWidget.setCurrentIndex(0)
           
      
      #changePasswordpushButtonclicked
@@ -1210,7 +1221,7 @@ class Ui_MainWindow(object):
                                        """,(productname,category,quantity,price,location,imagepath))
                         connection.commit()
                         
-                        QMessageBox.information(None,"Error","Produce Added Successfully!")
+                        QMessageBox.information(None,"Saved","Produce Added Successfully!")
                         cursor.close()
                         connection.close()
                         self.productnamelineEdit.clear()

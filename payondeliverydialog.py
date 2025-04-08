@@ -50,7 +50,7 @@ class Ui_paymentonDeliveryDialog(object):
         days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         random_day = random.choice(days_of_week)
         county=self.locationcomboBox.currentText()
-        QMessageBox.information(None,"Success",f"You Order will be Delivered To {county} Agrimesh Official store\n On {random_day}")
+        QMessageBox.information(None,"Success",f"You Order will be Delivered To {county} Agrimesh Official store\n On {random_day} On Farmer is Approval")
         QtWidgets.QApplication.instance().activeWindow().close()
         
         
