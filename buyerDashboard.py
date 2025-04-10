@@ -399,7 +399,7 @@ class Ui_buyerDashboardDialog(object):
     <h3>Credits</h3>
     <p>Senior Developer and Designer: Justin Omare</p>
     <p>Team Members:</p>
-    <p>Manyasa Elton - System Tester & Documentation</p>
+    <p>Manyasa Elton - System Tester & Project Coordinator</p>
     <p>Jerry Scotch - Frontend Designer</p>
     <p>Gloria Mongasi - Database Admin</p>
     <p>Solomon Nyongesa - Database Administrator</p>

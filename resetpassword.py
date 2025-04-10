@@ -103,7 +103,7 @@ class Ui_forgotpasswordDialog(object):
                     connection.commit()
                     QtWidgets.QApplication.instance().activeWindow().close()
             else:
-                QMessageBox.warning(None,"Error","User Doesn't Exist In our Database!")
+                QMessageBox.warning(None,"Error","User Doesn't Exist !")
             
             connection.commit()
             connection.close()

@@ -125,7 +125,7 @@ class Ui_loginOrregistrationDialog(object):
                     cursor.execute("INSERT INTO loginlogs(description) VALUES(%s);",(description,))
                     connection.commit()
                     if role=="Farmer":
-                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Farmer.Let's Grow Together!")
+                        
                          
                         from farmersDashboard import Ui_MainWindow
                         self.farmerdash = QtWidgets.QMainWindow()
@@ -133,10 +133,12 @@ class Ui_loginOrregistrationDialog(object):
                         self.ui.setupUi(self.farmerdash)
                         self.farmerdash.setFixedSize(953, 717)
                         self.farmerdash.show()
+                        
                         QtWidgets.QApplication.instance().activeWindow().close()
+                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Farmer.Let's Grow Together!")
                         
                     elif role=="Buyer":
-                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Buyer.Find The Best Deals Today!")
+                        
                         
                         from buyerDashboard import Ui_buyerDashboardDialog
                         self.buyerdash = QtWidgets.QMainWindow()
@@ -144,18 +146,22 @@ class Ui_loginOrregistrationDialog(object):
                         self.ui.setupUi(self.buyerdash)
                         self.buyerdash.setFixedSize(954, 719)
                         self.buyerdash.show()
+                        
                         QtWidgets.QApplication.instance().activeWindow().close()
+                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Valued Buyer.Find The Best Deals Today!")
                 
                         
                     else:
-                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Master Admin!")
+                        
                         from adminDashboard import Ui_admnidashboardDialog
                         self.admindash = QtWidgets.QMainWindow()
                         self.ui = Ui_admnidashboardDialog()
                         self.ui.setupUi(self.admindash)
                         self.admindash.setFixedSize(954, 713)
                         self.admindash.show()
+                        
                         QtWidgets.QApplication.instance().activeWindow().close()
+                        QMessageBox.information(None,"Success","Login Successfully\nWelcome Back Our Master Admin!")
                        
                 else:
                     QMessageBox.information(None,"Error","User Doesn't Exist!\nPlease Register")
